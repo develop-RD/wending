@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Свадьба Дениса и Евгении</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Фоновые элементы для стиля "домик в лесу" -->
+    <div class="tree tree-left"></div>
+    <div class="tree tree-right"></div>
+    <div class="leaf leaf1"></div>
+    <div class="leaf leaf2"></div>
+    <div class="leaf leaf3"></div>
+    <div class="leaf leaf4"></div>
+    
+    <div class="container">
+        <!-- Главная страница -->
+        <section id="home" class="page active">
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1 class="main-title">Свадьба</h1>
+                    <h2 class="couple-name">Дениса <span class="and">&</span> Евгении</h2>
+                    <div class="date">21 августа 2023</div>
+                    <p class="invitation">Дорогие друзья и родные! <br>Приглашаем вас разделить с нами радость в этот особенный день.</p>
+                    <div class="ornament"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Навигационные кнопки -->
+        <nav class="nav-menu">
+            <button class="nav-btn" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
+            </button>
+            <button class="nav-btn" data-page="address">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Адрес</span>
+            </button>
+            <button class="nav-btn" data-page="menu">
+                <i class="fas fa-utensils"></i>
+                <span>Меню</span>
+            </button>
+            <button class="nav-btn" data-page="guests">
+                <i class="fas fa-users"></i>
+                <span>Гости</span>
+            </button>
+        </nav>
+
+        <!-- Страница с адресами -->
+        <section id="address" class="page">
+            <div class="page-content">
+                <h2 class="page-title"><i class="fas fa-map-signs"></i> Адреса мероприятий</h2>
+                <div class="addresses-container">
+                    <div class="address-card">
+                        <div class="address-icon">
+                            <i class="fas fa-ring"></i>
+                        </div>
+                        <h3>Церемония в ЗАГСе</h3>
+                        <p>Английская набережная 28, Санкт-Петербург</p>
+                        <p class="time"><i class="far fa-clock"></i> Начало в 14:00</p>
+                        <div class="map-container">
+                            <div id="map-zags" class="map-placeholder">
+                                <p>Карта загружается...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="address-card">
+                        <div class="address-icon">
+                            <i class="fas fa-glass-cheers"></i>
+                        </div>
+                        <h3>Праздничный ужин</h3>
+                        <p>Приморское шоссе 452А, Санкт-Петербург</p>
+                        <p class="time"><i class="far fa-clock"></i> Начало в 17:00</p>
+                        <div class="map-container">
+                            <div id="map-party" class="map-placeholder">
+                                <p>Карта загружается...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Страница с меню -->
+        <section id="menu" class="page">
+            <div class="page-content">
+                <h2 class="page-title"><i class="fas fa-utensil-spoon"></i> Меню праздничного ужина</h2>
+                <div class="menu-container">
+                    <div class="menu-category">
+                        <h3><i class="fas fa-fish"></i> Закуски</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Брускетта с авокадо и креветками</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Хрустящий хлеб с нежным авокадо, тигровыми креветками и соусом из лайма.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Капрезе с сыром буратта</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Свежие томаты, нежный сыр буратта, базилик и оливковое масло холодного отжима.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h3><i class="fas fa-drumstick-bite"></i> Основные блюда</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Медовая утка с грушевым пюре</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Утиная грудка в медовом маринаде с нежным грушевым пюре и овощами на гриле.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Лосось под соусом из шпината</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Филе лосося с крем-соусом из шпината и запеченным картофелем.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h3><i class="fas fa-birthday-cake"></i> Десерты</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Свадебный торт "Лесные ягоды"</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Нежные бисквитные коржи с кремом из маскарпоне и свежими лесными ягодами.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Тирамису в индивидуальной подаче</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Классический итальянский десерт с кофе масала и какао.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-category">
+                        <h3><i class="fas fa-wine-glass-alt"></i> Напитки</h3>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Игристые вина</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Подборка итальянских и французских игристых вин к каждому этапу вечера.</p>
+                        </div>
+                        <div class="menu-item">
+                            <div class="menu-item-header">
+                                <h4>Фирменные коктейли</h4>
+                                <span class="menu-dots"></span>
+                                <span class="menu-price"></span>
+                            </div>
+                            <p class="menu-description">Авторские коктейли "Лесная сказка" и "Любовь в Петербурге".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Страница для гостей -->
+        <section id="guests" class="page">
+            <div class="page-content">
+                <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
+                <p class="page-subtitle">Пожалуйста, заполните форму ниже, чтобы мы могли подготовиться к вашему приходу</p>
+                
+                <form id="guest-form" class="guest-form">
+                    <div class="form-group">
+                        <label for="guest-name"><i class="fas fa-user"></i> Ваше имя и фамилия</label>
+                        <input type="text" id="guest-name" name="guest-name" required placeholder="Введите ваше имя">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-check"></i> Вы придёте на свадьбу?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="yes" required>
+                                <span class="radio-custom"></span>
+                                Да, с удовольствием!
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="attendance" value="no" required>
+                                <span class="radio-custom"></span>
+                                К сожалению, не смогу
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="companion-section" class="hidden">
+                        <h3><i class="fas fa-user-plus"></i> Информация о спутнике</h3>
+                        
+                        <div class="form-group">
+                            <label for="companion-name">Имя и фамилия спутника</label>
+                            <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="food-preference">Пожелания по еде для спутника</label>
+                            <select id="food-preference" name="food-preference">
+                                <option value="">Выберите предпочтение</option>
+                                <option value="meat">Мясное меню</option>
+                                <option value="fish">Рыбное меню</option>
+                                <option value="vegetarian">Вегетарианское меню</option>
+                                <option value="vegan">Веганское меню</option>
+                                <option value="child">Детское меню</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="drink-preference">Пожелания по напиткам для спутника</label>
+                            <select id="drink-preference" name="drink-preference">
+                                <option value="">Выберите предпочтение</option>
+                                <option value="alcohol">Алкогольные напитки</option>
+                                <option value="non-alcohol">Безалкогольные напитки</option>
+                                <option value="wine">Только вино</option>
+                                <option value="champagne">Только шампанское</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="wishes"><i class="fas fa-heart"></i> Ваши пожелания молодоженам</label>
+                        <textarea id="wishes" name="wishes" rows="3" placeholder="Напишите ваши пожелания..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Отправить ответ
+                    </button>
+                    
+                    <div id="response-message" class="hidden"></div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_яндкс_карт&lang=ru_RU"></script>
+</body>
+</html>

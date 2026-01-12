@@ -1,0 +1,44 @@
+##[pylyzer] failed /home/dean/website/app.py 1767978478 15959
+.___v_desugar_1: Never
+.Flask: Never
+.render_template: Never
+.request: Never
+.jsonify: Never
+.g: Never
+.session: Never
+.redirect: Never
+.url_for: Never
+.sqlite3: Never
+
+.os: Never
+
+.secrets: Never
+
+.time: Never
+
+.threading: Never
+
+.___v_desugar_2: Never
+.wraps: Never
+.___v_desugar_3: Never
+.contextmanager: Never
+.app: Never
+.db_lock: Never
+.generate_secret_key: () -> Str
+
+
+
+.get_db_connection: () -> Never
+.get_db_cursor: () -> Never
+.init_db: () -> Never
+.login_required: |Type_1062: Type|(f: () -> Type_1062) -> (*args: Obj, **kwargs := ?Type_1058) -> Never
+.index: () -> Never
+.save_guest: () -> Never
+.admin_login_page: () -> Never
+.admin_login: () -> Never
+.admin_logout: () -> Never
+.admin_dashboard: () -> Never
+.export_data: () -> Never
+.api_stats: () -> Never
+.cleanup_database: () -> Never
+

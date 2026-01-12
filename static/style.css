@@ -1,0 +1,669 @@
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #f5f1e6 0%, #e8dfc8 100%);
+    color: #4a3c2d;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Стиль "домик в лесу" - фоновые элементы */
+.tree {
+    position: fixed;
+    width: 200px;
+    height: 400px;
+    background-color: #5a4a3a;
+    z-index: 0;
+    border-radius: 10px;
+    opacity: 0.3;
+}
+
+.tree-left {
+    left: 50px;
+    bottom: 0;
+    height: 500px;
+}
+
+.tree-right {
+    right: 50px;
+    bottom: 0;
+    height: 450px;
+}
+
+.tree:before {
+    content: '';
+    position: absolute;
+    top: -150px;
+    left: -50px;
+    width: 300px;
+    height: 200px;
+    background-color: #2d5c2a;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.tree:after {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -25px;
+    width: 250px;
+    height: 150px;
+    background-color: #3a7a35;
+    border-radius: 50%;
+    z-index: -2;
+}
+
+.leaf {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    background-color: #3a7a35;
+    border-radius: 50% 0;
+    opacity: 0.4;
+    z-index: 0;
+}
+
+.leaf1 {
+    top: 100px;
+    left: 150px;
+    transform: rotate(45deg);
+}
+
+.leaf2 {
+    top: 200px;
+    right: 120px;
+    transform: rotate(120deg);
+}
+
+.leaf3 {
+    bottom: 150px;
+    left: 200px;
+    transform: rotate(20deg);
+}
+
+.leaf4 {
+    bottom: 250px;
+    right: 200px;
+    transform: rotate(80deg);
+}
+
+/* Навигационное меню */
+.nav-menu {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    overflow: hidden;
+}
+
+.nav-btn:hover {
+    background-color: #a38662;
+    transform: translateX(5px);
+    width: 170px;
+}
+
+.nav-btn i {
+    font-size: 18px;
+}
+
+/* Страницы */
+.page {
+    display: none;
+    min-height: 90vh;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Главная страница */
+.welcome-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    text-align: center;
+}
+
+.welcome-text {
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d4c9b8;
+}
+
+.main-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    color: #8b7355;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+}
+
+.couple-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    color: #5a4a3a;
+    margin-bottom: 20px;
+}
+
+.couple-name .and {
+    color: #d4a574;
+    font-style: italic;
+    margin: 0 10px;
+}
+
+.date {
+    font-size: 1.8rem;
+    color: #7d6b52;
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.invitation {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #5a4a3a;
+    margin-bottom: 30px;
+}
+
+.ornament {
+    height: 2px;
+    width: 150px;
+    background-color: #d4a574;
+    margin: 30px auto;
+    position: relative;
+}
+
+.ornament:before, .ornament:after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #d4a574;
+    border-radius: 50%;
+    top: -4px;
+}
+
+.ornament:before {
+    left: 0;
+}
+
+.ornament:after {
+    right: 0;
+}
+
+/* Заголовки страниц */
+.page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: #8b7355;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.page-title:after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background-color: #d4a574;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-title i {
+    margin-right: 15px;
+    color: #d4a574;
+}
+
+.page-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #7d6b52;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-content {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d4c9b8;
+    margin-top: 20px;
+}
+
+/* Страница с адресами */
+.addresses-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.address-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background-color: #f9f5eb;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2d9c9;
+    transition: transform 0.3s ease;
+}
+
+.address-card:hover {
+    transform: translateY(-5px);
+}
+
+.address-icon {
+    width: 70px;
+    height: 70px;
+    background-color: #d4a574;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.address-icon i {
+    font-size: 30px;
+    color: white;
+}
+
+.address-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: #8b7355;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.address-card p {
+    color: #5a4a3a;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.time {
+    color: #d4a574 !important;
+    font-weight: 600;
+    margin-top: 15px !important;
+}
+
+.time i {
+    margin-right: 8px;
+}
+
+.map-container {
+    margin-top: 20px;
+    height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #d4c9b8;
+}
+
+.map-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0e9db;
+    color: #7d6b52;
+    font-style: italic;
+}
+
+/* Страница с меню */
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.menu-category {
+    background-color: #f9f5eb;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2d9c9;
+}
+
+.menu-category h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: #8b7355;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2d9c9;
+}
+
+.menu-category h3 i {
+    margin-right: 10px;
+    color: #d4a574;
+}
+
+.menu-item {
+    margin-bottom: 20px;
+}
+
+.menu-item:last-child {
+    margin-bottom: 0;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.menu-item-header h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: #5a4a3a;
+    font-weight: 600;
+}
+
+.menu-dots {
+    flex-grow: 1;
+    border-bottom: 2px dotted #d4c9b8;
+    margin: 0 10px;
+}
+
+.menu-price {
+    font-weight: 600;
+    color: #d4a574;
+}
+
+.menu-description {
+    color: #7d6b52;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Страница для гостей */
+.guest-form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #5a4a3a;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    color: #d4a574;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d4c9b8;
+    border-radius: 8px;
+    background-color: #f9f5eb;
+    color: #5a4a3a;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #d4a574;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #d4c9b8;
+    margin-right: 10px;
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom {
+    border-color: #d4a574;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom:after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: #d4a574;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#companion-section {
+    background-color: #f9f5eb;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid #e2d9c9;
+}
+
+#companion-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: #8b7355;
+    margin-bottom: 20px;
+}
+
+#companion-section h3 i {
+    margin-right: 10px;
+    color: #d4a574;
+}
+
+.submit-btn {
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto 0;
+    transition: all 0.3s ease;
+    font-family: 'Cormorant Garamond', serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:hover {
+    background-color: #a38662;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.submit-btn i {
+    margin-right: 10px;
+}
+
+#response-message {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#response-message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+#response-message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+/* Утилиты */
+.hidden {
+    display: none !important;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .nav-menu {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 30px;
+        transform: none;
+    }
+    
+    .nav-btn {
+        width: auto;
+        padding: 12px 15px;
+    }
+    
+    .nav-btn span {
+        display: none;
+    }
+    
+    .nav-btn:hover {
+        width: auto;
+        transform: translateY(-3px);
+    }
+    
+    .main-title {
+        font-size: 2.8rem;
+    }
+    
+    .couple-name {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-content {
+        padding: 25px 20px;
+    }
+    
+    .welcome-text {
+        padding: 30px 20px;
+    }
+    
+    .main-title {
+        font-size: 2.3rem;
+    }
+    
+    .couple-name {
+        font-size: 1.8rem;
+    }
+    
+    .date {
+        font-size: 1.5rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .addresses-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .address-card {
+        width: 100%;
+    }
+    
+    .menu-container {
+        grid-template-columns: 1fr;
+    }
+}

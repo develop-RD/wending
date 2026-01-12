@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Свадьба Дениса и Евгении</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .admin-title {
+            font-family: 'Cormorant Garamond', serif;
+            color: #8b7355;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .admin-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #d4c9b8;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .admin-btn {
+            background-color: #8b7355;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .admin-btn:hover {
+            background-color: #a38662;
+        }
+        
+        .admin-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1 class="admin-title">
+            <i class="fas fa-lock"></i> Админ-панель
+        </h1>
+        <p style="color: #7d6b52; margin-bottom: 30px;">Войдите для просмотра ответов гостей</p>
+        
+        <form id="admin-login-form" class="admin-form">
+            <input type="text" id="username" placeholder="Логин" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit" class="admin-btn">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+        
+        <div id="admin-message" class="admin-message"></div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#admin-login-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                const username = $('#username').val();
+                const password = $('#password').val();
+                
+                $.ajax({
+                    url: '/admin/login',
+                    method: 'POST',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = '/admin/dashboard';
+                        } else {
+                            $('#admin-message')
+                                .addClass('error')
+                                .text(response.message || 'Неверные данные для входа')
+                                .show();
+                        }
+                    },
+                    error: function() {
+                        $('#admin-message')
+                            .addClass('error')
+                            .text('Ошибка соединения с сервером')
+                            .show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
