@@ -354,21 +354,24 @@ body {
 }
 
 .map-container {
-    margin-top: 20px;
-    height: 250px;
-    border-radius: 10px;
+    width: 100%;
+    height: 300px;
+    border-radius: 15px;
     overflow: hidden;
-    border: 1px solid #d4c9b8;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    position: relative;
 }
 
 .map-placeholder {
+   width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f0e9db;
-    color: #7d6b52;
-    font-style: italic;
+    background: linear-gradient(135deg, #f9f3e9 0%, #f5ebdc 100%);
+    color: #8b7355;
+    font-size: 16px;
 }
 
 /* Страница с меню */
@@ -655,12 +658,22 @@ body {
     }
     
     .addresses-container {
-        flex-direction: column;
-        align-items: center;
+       display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 30px;
     }
-    
     .address-card {
-        width: 100%;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.15);
+    backdrop-filter: blur(10px);
+
     }
     
     .menu-container {

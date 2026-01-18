@@ -33,14 +33,10 @@ $(document).ready(function() {
             $('#companion-section').removeClass('hidden');
             // Делаем поля спутника обязательными, если гость придет
             $('#companion-name').prop('required', true);
-            $('#food-preference').prop('required', true);
-            $('#drink-preference').prop('required', true);
         } else {
             $('#companion-section').addClass('hidden');
             // Убираем обязательность полей спутника, если гость не придет
             $('#companion-name').prop('required', false);
-            $('#food-preference').prop('required', false);
-            $('#drink-preference').prop('required', false);
         }
     });
     
@@ -58,17 +54,17 @@ $(document).ready(function() {
                 // Карта для ЗАГСа
                 const mapZags = new ymaps.Map('map-zags', {
                     center: [59.9343, 30.2989], // Координаты Английская наб. 28
-                    zoom: 16,
-                    controls: ['zoomControl']
+                    zoom: 17,
+                    controls: ['zoomControl', 'fullscreenControl']
                 });
                 
                 const zagsPlacemark = new ymaps.Placemark([59.9343, 30.2989], {
-                    balloonContent: 'ЗАГС на Английской набережной 28'
+                    balloonContentHeader: 'ЗАГС №1',
+                    balloonContentBody: '<p>Английская набережная 28<br>Начало в 14:00</p>',
+                    balloonContentFooter: '21 августа 2023'
                 }, {
-                    iconLayout: 'default#image',
-                    iconImageHref: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/ring.svg',
-                    iconImageSize: [30, 30],
-                    iconImageOffset: [-15, -30]
+                    preset: 'islands#darkGreenIcon',
+                    iconColor: '#8b7355'
                 });
                 
                 mapZags.geoObjects.add(zagsPlacemark);
@@ -76,20 +72,27 @@ $(document).ready(function() {
                 // Карта для места празднования
                 const mapParty = new ymaps.Map('map-party', {
                     center: [60.1826, 29.7851], // Координаты Приморское ш. 452А
-                    zoom: 15,
-                    controls: ['zoomControl']
+                    zoom: 16,
+                    controls: ['zoomControl', 'fullscreenControl']
                 });
                 
                 const partyPlacemark = new ymaps.Placemark([60.1826, 29.7851], {
-                    balloonContent: 'Место празднования: Приморское шоссе 452А'
+                    balloonContentHeader: 'Место празднования',
+                    balloonContentBody: '<p>Приморское шоссе 452А<br>Начало в 17:00</p>',
+                    balloonContentFooter: 'Банкетный зал "Лесная сказка"'
                 }, {
-                    iconLayout: 'default#image',
-                    iconImageHref: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/glass-cheers.svg',
-                    iconImageSize: [30, 30],
-                    iconImageOffset: [-15, -30]
+                    preset: 'islands#darkGreenIcon',
+                    iconColor: '#8b7355'
                 });
                 
                 mapParty.geoObjects.add(partyPlacemark);
+                
+                // Автоматически подгоняем размер карты
+                setTimeout(function() {
+                    mapZags.container.fitToViewport();
+                    mapParty.container.fitToViewport();
+                }, 1000);
+                
             } catch (error) {
                 console.error('Ошибка при загрузке Яндекс.Карт:', error);
                 showStaticMaps();
@@ -100,23 +103,31 @@ $(document).ready(function() {
     // Функция для показа статических карт (если Яндекс.Карты не загрузились)
     function showStaticMaps() {
         $('#map-zags').html(`
-            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;">
-                <p><strong>ЗАГС на Английской набережной 28</strong></p>
-                <p>Санкт-Петербург</p>
-                <p>Начало в 14:00</p>
-                <div style="margin-top:15px;color:#8b7355;">
-                    <i class="fas fa-map-marker-alt" style="font-size:24px;"></i>
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:linear-gradient(135deg, #f9f3e9 0%, #f5ebdc 100%);">
+                <div style="margin-bottom:15px;">
+                    <i class="fas fa-ring" style="font-size:48px;color:#8b7355;"></i>
+                </div>
+                <h4 style="margin:10px 0;color:#8b7355;">ЗАГС на Английской набережной 28</h4>
+                <p style="margin:5px 0;">Санкт-Петербург</p>
+                <p style="margin:5px 0;"><strong>Начало в 14:00</strong></p>
+                <p style="margin:5px 0;">21 августа 2023</p>
+                <div style="margin-top:20px;padding:10px;background:rgba(139,115,85,0.1);border-radius:10px;">
+                    <p style="margin:0;font-size:14px;color:#666;">📍 Отметка места на карте</p>
                 </div>
             </div>
         `);
         
         $('#map-party').html(`
-            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;">
-                <p><strong>Место празднования</strong></p>
-                <p>Приморское шоссе 452А</p>
-                <p>Начало в 17:00</p>
-                <div style="margin-top:15px;color:#8b7355;">
-                    <i class="fas fa-glass-cheers" style="font-size:24px;"></i>
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:linear-gradient(135deg, #f9f3e9 0%, #f5ebdc 100%);">
+                <div style="margin-bottom:15px;">
+                    <i class="fas fa-glass-cheers" style="font-size:48px;color:#8b7355;"></i>
+                </div>
+                <h4 style="margin:10px 0;color:#8b7355;">Банкетный зал "Лесная сказка"</h4>
+                <p style="margin:5px 0;">Приморское шоссе 452А</p>
+                <p style="margin:5px 0;"><strong>Начало в 17:00</strong></p>
+                <p style="margin:5px 0;">21 августа 2023</p>
+                <div style="margin-top:20px;padding:10px;background:rgba(139,115,85,0.1);border-radius:10px;">
+                    <p style="margin:0;font-size:14px;color:#666;">📍 Отметка места на карте</p>
                 </div>
             </div>
         `);
@@ -124,12 +135,36 @@ $(document).ready(function() {
     
     // Функция отправки формы гостя
     function submitGuestForm() {
+        // Собираем данные о выбранных блюдах и напитках для гостя
+        const guestFood = [];
+        $('input[name="guest-food"]:checked').each(function() {
+            guestFood.push($(this).val());
+        });
+        
+        const guestDrink = [];
+        $('input[name="guest-drink"]:checked').each(function() {
+            guestDrink.push($(this).val());
+        });
+        
+        // Собираем данные о выбранных блюдах и напитках для спутника
+        const companionFood = [];
+        $('input[name="companion-food"]:checked').each(function() {
+            companionFood.push($(this).val());
+        });
+        
+        const companionDrink = [];
+        $('input[name="companion-drink"]:checked').each(function() {
+            companionDrink.push($(this).val());
+        });
+        
         const formData = {
             name: $('#guest-name').val(),
             attendance: $('input[name="attendance"]:checked').val(),
             companion: $('#companion-name').val(),
-            foodPreference: $('#food-preference').val(),
-            drinkPreference: $('#drink-preference').val(),
+            guestFood: guestFood,
+            guestDrink: guestDrink,
+            companionFood: companionFood,
+            companionDrink: companionDrink,
             wishes: $('#wishes').val(),
             timestamp: new Date().toISOString()
         };
@@ -141,9 +176,17 @@ $(document).ready(function() {
         }
         
         if (formData.attendance === 'yes') {
-            if (!formData.companion || !formData.foodPreference || !formData.drinkPreference) {
-                showResponseMessage('Пожалуйста, заполните информацию о спутнике', 'error');
+            if (guestFood.length === 0 || guestDrink.length === 0) {
+                showResponseMessage('Пожалуйста, выберите блюда и напитки для себя', 'error');
                 return;
+            }
+            
+            // Проверяем, заполнено ли имя спутника
+            if (formData.companion && formData.companion.trim() !== '') {
+                if (companionFood.length === 0 || companionDrink.length === 0) {
+                    showResponseMessage('Пожалуйста, выберите блюда и напитки для спутника', 'error');
+                    return;
+                }
             }
         }
         
@@ -151,13 +194,25 @@ $(document).ready(function() {
         // Вместо этого покажем имитацию отправки
         console.log('Данные формы:', formData);
         
+        // Формируем сообщение с выбранными блюдами
+        let selectedFoodMessage = '';
+        if (guestFood.length > 0) {
+            selectedFoodMessage += 'Вы выбрали: ' + guestFood.join(', ') + '. ';
+        }
+        if (companionFood.length > 0 && formData.companion) {
+            selectedFoodMessage += 'Спутник выбрал: ' + companionFood.join(', ') + '.';
+        }
+        
         // Имитация отправки на сервер
         setTimeout(function() {
-            showResponseMessage('Спасибо за ваш ответ! Мы рады, что вы сможете разделить с нами этот день.', 'success');
+            showResponseMessage('Спасибо за ваш ответ! ' + selectedFoodMessage, 'success');
             
             // Очищаем форму после успешной отправки
             $('#guest-form')[0].reset();
             $('#companion-section').addClass('hidden');
+            
+            // Сбрасываем все checkbox
+            $('input[type="checkbox"]').prop('checked', false);
         }, 1000);
     }
     
@@ -171,53 +226,4 @@ $(document).ready(function() {
             responseDiv.addClass('hidden');
         }, 5000);
     }
-  // В функции submitGuestForm() замените имитацию отправки на реальный AJAX запрос:
-function submitGuestForm() {
-    const formData = {
-        name: $('#guest-name').val(),
-        attendance: $('input[name="attendance"]:checked').val(),
-        companion: $('#companion-name').val(),
-        foodPreference: $('#food-preference').val(),
-        drinkPreference: $('#drink-preference').val(),
-        wishes: $('#wishes').val()
-    };
-    
-    // Проверка заполнения формы
-    if (!formData.name || !formData.attendance) {
-        showResponseMessage('Пожалуйста, заполните обязательные поля', 'error');
-        return;
-    }
-    
-    if (formData.attendance === 'yes') {
-        if (!formData.companion || !formData.foodPreference || !formData.drinkPreference) {
-            showResponseMessage('Пожалуйста, заполните информацию о спутнике', 'error');
-            return;
-        }
-    }
-    
-    // Отправка данных на сервер
-    $.ajax({
-        url: '/save_guest',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        success: function(response) {
-            if (response.success) {
-                showResponseMessage(
-                    response.message + ' Всего подтвердили участие: ' + response.attending_count, 
-                    'success'
-                );
-                
-                // Очищаем форму после успешной отправки
-                $('#guest-form')[0].reset();
-                $('#companion-section').addClass('hidden');
-            } else {
-                showResponseMessage(response.message, 'error');
-            }
-        },
-        error: function() {
-            showResponseMessage('Ошибка соединения с сервером. Попробуйте позже.', 'error');
-        }
-    });
-}
 });

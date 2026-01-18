@@ -377,7 +377,7 @@ if __name__ == '__main__':
     app.run(
         host="192.168.0.107",
         debug=True, 
-        port=80,
+        port=8020,
         threaded=True,  # Разрешаем многопоточность
         processes=1     # Используем только один процесс для SQLite
     )

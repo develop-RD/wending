@@ -8,6 +8,110 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Дополнительные стили для карт */
+        .ymaps-2-1-79-map {
+            border-radius: 15px !important;
+        }
+        .ymaps-2-1-79-inner-panes {
+            border-radius: 15px !important;
+        }
+        
+        /* Стили для чекбоксов */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        
+        .checkbox-label:hover {
+            transform: translateX(5px);
+            color: #8b7355;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            display: none;
+        }
+        
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #8b7355;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+            background-color: #8b7355;
+            border-color: #8b7355;
+        }
+        
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Улучшенные стили для карт */
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f9f3e9 0%, #f5ebdc 100%);
+            color: #8b7355;
+            font-size: 16px;
+        }
+        
+        /* Улучшенные стили для адресной секции */
+        .addresses-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .address-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(139, 115, 85, 0.15);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
 <body>
     <!-- Фоновые элементы для стиля "домик в лесу" -->
@@ -211,27 +315,106 @@
                             <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
                         </div>
                         
+                        <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                            <i class="fas fa-user"></i> Ваши предпочтения
+                        </h4>
+                        
                         <div class="form-group">
-                            <label for="food-preference">Пожелания по еде для спутника</label>
-                            <select id="food-preference" name="food-preference">
-                                <option value="">Выберите предпочтение</option>
-                                <option value="meat">Мясное меню</option>
-                                <option value="fish">Рыбное меню</option>
-                                <option value="vegetarian">Вегетарианское меню</option>
-                                <option value="vegan">Веганское меню</option>
-                                <option value="child">Детское меню</option>
-                            </select>
+                            <label>Выберите блюда для себя</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-food" value="Брускетта с авокадо и креветками">
+                                    <span class="checkbox-custom"></span>
+                                    Брускетта с авокадо и креветками
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-food" value="Капрезе с сыром буратта">
+                                    <span class="checkbox-custom"></span>
+                                    Капрезе с сыром буратта
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-food" value="Медовая утка с грушевым пюре">
+                                    <span class="checkbox-custom"></span>
+                                    Медовая утка с грушевым пюре
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-food" value="Лосось под соусом из шпината">
+                                    <span class="checkbox-custom"></span>
+                                    Лосось под соусом из шпината
+                                </label>
+                            </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="drink-preference">Пожелания по напиткам для спутника</label>
-                            <select id="drink-preference" name="drink-preference">
-                                <option value="">Выберите предпочтение</option>
-                                <option value="alcohol">Алкогольные напитки</option>
-                                <option value="non-alcohol">Безалкогольные напитки</option>
-                                <option value="wine">Только вино</option>
-                                <option value="champagne">Только шампанское</option>
-                            </select>
+                            <label>Выберите напитки для себя</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-drink" value="Игристые вина">
+                                    <span class="checkbox-custom"></span>
+                                    Игристые вина
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-drink" value="Фирменные коктейли">
+                                    <span class="checkbox-custom"></span>
+                                    Фирменные коктейли
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="guest-drink" value="Соки и вода">
+                                    <span class="checkbox-custom"></span>
+                                    Соки и вода
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                            <i class="fas fa-user-friends"></i> Предпочтения спутника
+                        </h4>
+                        
+                        <div class="form-group">
+                            <label>Выберите блюда для спутника</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-food" value="Брускетта с авокадо и креветками">
+                                    <span class="checkbox-custom"></span>
+                                    Брускетта с авокадо и креветками
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-food" value="Капрезе с сыром буратта">
+                                    <span class="checkbox-custom"></span>
+                                    Капрезе с сыром буратта
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-food" value="Медовая утка с грушевым пюре">
+                                    <span class="checkbox-custom"></span>
+                                    Медовая утка с грушевым пюре
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-food" value="Лосось под соусом из шпината">
+                                    <span class="checkbox-custom"></span>
+                                    Лосось под соусом из шпината
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Выберите напитки для спутника</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-drink" value="Игристые вина">
+                                    <span class="checkbox-custom"></span>
+                                    Игристые вина
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-drink" value="Фирменные коктейли">
+                                    <span class="checkbox-custom"></span>
+                                    Фирменные коктейли
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="companion-drink" value="Соки и вода">
+                                    <span class="checkbox-custom"></span>
+                                    Соки и вода
+                                </label>
+                            </div>
                         </div>
                     </div>
                     
