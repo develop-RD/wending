@@ -121,13 +121,41 @@ def save_guest():
         if data.get('attendance') not in ['yes', 'no']:
             return jsonify({"success": False, "message": "Неверный статус присутствия"})
         
+        # Обработка выбранных блюд и напитков для гостя
+        guest_food_list = data.get('guestFood', [])
+        guest_drink_list = data.get('guestDrink', [])
+        
+        # Обработка выбранных блюд и напитков для спутника
+        companion_food_list = data.get('companionFood', [])
+        companion_drink_list = data.get('companionDrink', [])
+        
+        # Объединяем все выбранные блюда и напитки
+        all_food = []
+        all_drinks = []
+        
+        if guest_food_list:
+            all_food.extend(guest_food_list)
+        
+        if companion_food_list:
+            all_food.extend(companion_food_list)
+        
+        if guest_drink_list:
+            all_drinks.extend(guest_drink_list)
+        
+        if companion_drink_list:
+            all_drinks.extend(companion_drink_list)
+        
+        # Формируем строки для сохранения в БД
+        food_preference_str = ', '.join(all_food) if all_food else None
+        drink_preference_str = ', '.join(all_drinks) if all_drinks else None
+        
         # Подготовка данных
         guest_data = (
             data.get('name', '').strip(),
             data.get('attendance'),
             data.get('companion', '').strip() if data.get('companion') else None,
-            data.get('foodPreference') if data.get('foodPreference') else None,
-            data.get('drinkPreference') if data.get('drinkPreference') else None,
+            food_preference_str,
+            drink_preference_str,
             data.get('wishes', '').strip()[:1000] if data.get('wishes') else None
         )
         
@@ -230,24 +258,41 @@ def admin_dashboard():
                 companions_count = cursor.fetchone()['companions']
                 total_participants = attending_guests + companions_count
                 
-                # Статистика по предпочтениям
-                cursor.execute("""
-                    SELECT food_preference, COUNT(*) as count 
-                    FROM guests 
-                    WHERE food_preference IS NOT NULL AND food_preference != ''
-                    GROUP BY food_preference
-                    ORDER BY count DESC
-                """)
-                food_stats = cursor.fetchall()
+                # Статистика по предпочтениям - переделана для анализа отдельных блюд
+                all_food_items = []
+                all_drink_items = []
                 
-                cursor.execute("""
-                    SELECT drink_preference, COUNT(*) as count 
-                    FROM guests 
-                    WHERE drink_preference IS NOT NULL AND drink_preference != ''
-                    GROUP BY drink_preference
-                    ORDER BY count DESC
-                """)
-                drink_stats = cursor.fetchall()
+                # Собираем все предпочтения в еде
+                cursor.execute("SELECT food_preference FROM guests WHERE food_preference IS NOT NULL AND food_preference != ''")
+                food_rows = cursor.fetchall()
+                for row in food_rows:
+                    items = [item.strip() for item in row['food_preference'].split(',') if item.strip()]
+                    all_food_items.extend(items)
+                
+                # Собираем все предпочтения в напитках
+                cursor.execute("SELECT drink_preference FROM guests WHERE drink_preference IS NOT NULL AND drink_preference != ''")
+                drink_rows = cursor.fetchall()
+                for row in drink_rows:
+                    items = [item.strip() for item in row['drink_preference'].split(',') if item.strip()]
+                    all_drink_items.extend(items)
+                
+                # Подсчитываем статистику по каждому блюду
+                food_stats_dict = {}
+                for item in all_food_items:
+                    food_stats_dict[item] = food_stats_dict.get(item, 0) + 1
+                
+                # Сортируем по количеству выборов
+                food_stats = [{'food_preference': item, 'count': count} 
+                            for item, count in sorted(food_stats_dict.items(), key=lambda x: x[1], reverse=True)]
+                
+                # Подсчитываем статистику по каждому напитку
+                drink_stats_dict = {}
+                for item in all_drink_items:
+                    drink_stats_dict[item] = drink_stats_dict.get(item, 0) + 1
+                
+                # Сортируем по количеству выборов
+                drink_stats = [{'drink_preference': item, 'count': count} 
+                              for item, count in sorted(drink_stats_dict.items(), key=lambda x: x[1], reverse=True)]
                 
                 # Последние ответы
                 cursor.execute("SELECT * FROM guests ORDER BY submission_date DESC LIMIT 5")
@@ -375,7 +420,7 @@ if __name__ == '__main__':
     
     # Настройки для разработки
     app.run(
-        host="192.168.0.107",
+        host="localhost",
         debug=True, 
         port=8020,
         threaded=True,  # Разрешаем многопоточность

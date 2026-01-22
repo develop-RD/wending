@@ -136,84 +136,66 @@ $(document).ready(function() {
     // Функция отправки формы гостя
     function submitGuestForm() {
         // Собираем данные о выбранных блюдах и напитках для гостя
-        const guestFood = [];
-        $('input[name="guest-food"]:checked').each(function() {
-            guestFood.push($(this).val());
-        });
-        
-        const guestDrink = [];
-        $('input[name="guest-drink"]:checked').each(function() {
-            guestDrink.push($(this).val());
-        });
-        
-        // Собираем данные о выбранных блюдах и напитках для спутника
-        const companionFood = [];
-        $('input[name="companion-food"]:checked').each(function() {
-            companionFood.push($(this).val());
-        });
-        
-        const companionDrink = [];
-        $('input[name="companion-drink"]:checked').each(function() {
-            companionDrink.push($(this).val());
-        });
-        
-        const formData = {
-            name: $('#guest-name').val(),
-            attendance: $('input[name="attendance"]:checked').val(),
-            companion: $('#companion-name').val(),
-            guestFood: guestFood,
-            guestDrink: guestDrink,
-            companionFood: companionFood,
-            companionDrink: companionDrink,
-            wishes: $('#wishes').val(),
-            timestamp: new Date().toISOString()
-        };
-        
-        // Проверка заполнения формы
-        if (!formData.name || !formData.attendance) {
-            showResponseMessage('Пожалуйста, заполните обязательные поля', 'error');
-            return;
-        }
-        
-        if (formData.attendance === 'yes') {
-            if (guestFood.length === 0 || guestDrink.length === 0) {
-                showResponseMessage('Пожалуйста, выберите блюда и напитки для себя', 'error');
-                return;
+  const guestFood = [];
+    $('input[name="guest-food"]:checked').each(function() {
+        guestFood.push($(this).val());
+    });
+    
+    const guestDrink = [];
+    $('input[name="guest-drink"]:checked').each(function() {
+        guestDrink.push($(this).val());
+    });
+    
+    // Собираем данные о выбранных блюдах и напитках для спутника
+    const companionFood = [];
+    $('input[name="companion-food"]:checked').each(function() {
+        companionFood.push($(this).val());
+    });
+    
+    const companionDrink = [];
+    $('input[name="companion-drink"]:checked').each(function() {
+        companionDrink.push($(this).val());
+    });
+    
+    const formData = {
+        name: $('#guest-name').val(),
+        attendance: $('input[name="attendance"]:checked').val(),
+        companion: $('#companion-name').val(),
+        guestFood: guestFood,
+        guestDrink: guestDrink,
+        companionFood: companionFood,
+        companionDrink: companionDrink,
+        wishes: $('#wishes').val()
+    };
+    
+    // Проверка заполнения формы
+    if (!formData.name || !formData.attendance) {
+        showResponseMessage('Пожалуйста, заполните обязательные поля', 'error');
+        return;
+    }
+    
+    // Отправка данных на сервер
+    $.ajax({
+        url: '/save_guest',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+            if (response.success) {
+                showResponseMessage(response.message, 'success');
+                // Очищаем форму после успешной отправки
+                $('#guest-form')[0].reset();
+                $('#companion-section').addClass('hidden');
+                // Сбрасываем все checkbox
+                $('input[type="checkbox"]').prop('checked', false);
+            } else {
+                showResponseMessage(response.message, 'error');
             }
-            
-            // Проверяем, заполнено ли имя спутника
-            if (formData.companion && formData.companion.trim() !== '') {
-                if (companionFood.length === 0 || companionDrink.length === 0) {
-                    showResponseMessage('Пожалуйста, выберите блюда и напитки для спутника', 'error');
-                    return;
-                }
-            }
+        },
+        error: function() {
+            showResponseMessage('Ошибка при отправке данных. Пожалуйста, попробуйте позже.', 'error');
         }
-        
-        // В реальном проекте здесь должен быть AJAX запрос к серверу
-        // Вместо этого покажем имитацию отправки
-        console.log('Данные формы:', formData);
-        
-        // Формируем сообщение с выбранными блюдами
-        let selectedFoodMessage = '';
-        if (guestFood.length > 0) {
-            selectedFoodMessage += 'Вы выбрали: ' + guestFood.join(', ') + '. ';
-        }
-        if (companionFood.length > 0 && formData.companion) {
-            selectedFoodMessage += 'Спутник выбрал: ' + companionFood.join(', ') + '.';
-        }
-        
-        // Имитация отправки на сервер
-        setTimeout(function() {
-            showResponseMessage('Спасибо за ваш ответ! ' + selectedFoodMessage, 'success');
-            
-            // Очищаем форму после успешной отправки
-            $('#guest-form')[0].reset();
-            $('#companion-section').addClass('hidden');
-            
-            // Сбрасываем все checkbox
-            $('input[type="checkbox"]').prop('checked', false);
-        }, 1000);
+    });
     }
     
     // Функция показа сообщения об отправке

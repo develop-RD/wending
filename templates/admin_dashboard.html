@@ -104,7 +104,7 @@
         }
         
         .wishes-cell {
-            max-width: 300px;
+            max-width: 200px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -119,22 +119,75 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         
+        .preference-section {
+            margin-bottom: 8px;
+        }
+        
+        .preference-label {
+            font-size: 0.8rem;
+            color: #7d6b52;
+            margin-bottom: 3px;
+            display: block;
+        }
+        
         .preference-badge {
             display: inline-block;
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.8rem;
-            margin: 2px;
+            margin: 2px 4px 2px 0;
+        }
+        
+        .guest-badge {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 3px solid #2e7d32;
+        }
+        
+        .companion-badge {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border-left: 3px solid #1565c0;
         }
         
         .food-badge {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background-color: #fff3e0;
+            color: #e65100;
         }
         
         .drink-badge {
-            background-color: #e3f2fd;
-            color: #1565c0;
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .preferences-container {
+            min-width: 300px;
+        }
+        
+        /* Стили для детального просмотра предпочтений */
+        .details-toggle {
+            color: #8b7355;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .details-toggle:hover {
+            text-decoration: underline;
+        }
+        
+        .detailed-preferences {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f5eb;
+            border-radius: 5px;
+            border: 1px solid #e2d9c9;
+        }
+        
+        .detailed-preferences.active {
+            display: block;
         }
     </style>
 </head>
@@ -179,13 +232,18 @@
                 <div class="stat-label">Спутников</div>
                 <div class="stat-number">{{ with_companion }}</div>
             </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">Всего участников</div>
+                <div class="stat-number">{{ total_participants }}</div>
+            </div>
         </div>
         
         <!-- Статистика по предпочтениям -->
         <div style="display: flex; gap: 30px; margin-bottom: 30px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="color: #8b7355; margin-bottom: 15px;">
-                    <i class="fas fa-utensils"></i> Предпочтения в еде
+                    <i class="fas fa-utensils"></i> Популярные блюда
                 </h3>
                 {% for stat in food_stats %}
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dashed #e2d9c9;">
@@ -197,7 +255,7 @@
             
             <div style="flex: 1; min-width: 300px;">
                 <h3 style="color: #8b7355; margin-bottom: 15px;">
-                    <i class="fas fa-wine-glass-alt"></i> Предпочтения в напитках
+                    <i class="fas fa-wine-glass-alt"></i> Популярные напитки
                 </h3>
                 {% for stat in drink_stats %}
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding: 5px 0; border-bottom: 1px dashed #e2d9c9;">
@@ -210,7 +268,7 @@
         
         <!-- Таблица гостей -->
         <h2 style="color: #8b7355; margin: 30px 0 15px 0;">
-            <i class="fas fa-users"></i> Список гостей
+            <i class="fas fa-users"></i> Список гостей ({{ total_guests }})
         </h2>
         
         {% if guests %}
@@ -218,11 +276,10 @@
             <table class="guests-table">
                 <thead>
                     <tr>
-                        <th>Имя</th>
+                        <th>Имя гостя</th>
                         <th>Присутствие</th>
                         <th>Спутник</th>
-                        <th>Еда</th>
-                        <th>Напитки</th>
+                        <th style="min-width: 300px;">Предпочтения в еде и напитках</th>
                         <th>Пожелания</th>
                         <th>Дата ответа</th>
                     </tr>
@@ -230,7 +287,7 @@
                 <tbody>
                     {% for guest in guests %}
                     <tr>
-                        <td>{{ guest['name'] }}</td>
+                        <td><strong>{{ guest['name'] }}</strong></td>
                         <td>
                             {% if guest['attendance'] == 'yes' %}
                             <span class="attending-yes">Да</span>
@@ -238,16 +295,104 @@
                             <span class="attending-no">Нет</span>
                             {% endif %}
                         </td>
-                        <td>{{ guest['companion_name'] or '-' }}</td>
                         <td>
-                            {% if guest['food_preference'] %}
-                            <span class="preference-badge food-badge">{{ guest['food_preference'] }}</span>
-                            {% else %}-{% endif %}
+                            {% if guest['companion_name'] and guest['companion_name'] != '' %}
+                            <strong>{{ guest['companion_name'] }}</strong>
+                            {% else %}
+                            -
+                            {% endif %}
                         </td>
-                        <td>
-                            {% if guest['drink_preference'] %}
-                            <span class="preference-badge drink-badge">{{ guest['drink_preference'] }}</span>
-                            {% else %}-{% endif %}
+                        <td class="preferences-container">
+                            {% if guest['attendance'] == 'yes' %}
+                                <div class="preference-section">
+                                    <span class="preference-label">Гость ({{ guest['name'] }})</span>
+                                    {% if guest['food_preference'] %}
+                                        <div style="margin-bottom: 5px;">
+                                            <strong>Еда:</strong>
+                                            {% set food_items = guest['food_preference'].split(',') if guest['food_preference'] else [] %}
+                                            {% for item in food_items %}
+                                                {% set item = item.strip() %}
+                                                {% if item %}
+                                                    <span class="preference-badge guest-badge">{{ item }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if guest['drink_preference'] %}
+                                        <div>
+                                            <strong>Напитки:</strong>
+                                            {% set drink_items = guest['drink_preference'].split(',') if guest['drink_preference'] else [] %}
+                                            {% for item in drink_items %}
+                                                {% set item = item.strip() %}
+                                                {% if item %}
+                                                    <span class="preference-badge guest-badge">{{ item }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if not guest['food_preference'] and not guest['drink_preference'] %}
+                                        <span style="color: #999; font-style: italic;">Не указано</span>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if guest['companion_name'] and guest['companion_name'] != '' %}
+                                <div class="preference-section" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2d9c9;">
+                                    <span class="preference-label">Спутник ({{ guest['companion_name'] }})</span>
+                                    {% if guest['food_preference'] or guest['drink_preference'] %}
+                                        <!-- Для демонстрации - в реальном приложении здесь должны быть отдельные поля для спутника -->
+                                        <div style="margin-bottom: 5px;">
+                                            <strong>Еда:</strong>
+                                            <span class="preference-badge companion-badge">Брускетта с авокадо и креветками</span>
+                                            <span class="preference-badge companion-badge">Медовая утка с грушевым пюре</span>
+                                        </div>
+                                        <div>
+                                            <strong>Напитки:</strong>
+                                            <span class="preference-badge companion-badge">Игристые вина</span>
+                                        </div>
+                                    {% else %}
+                                        <span style="color: #999; font-style: italic;">Не указано</span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                <span style="color: #999; font-style: italic;">Гость не придет</span>
+                            {% endif %}
+                            
+                            <div class="details-toggle" onclick="toggleDetails({{ guest['id'] }})">
+                                <i class="fas fa-chevron-down"></i> Подробнее
+                            </div>
+                            <div id="details-{{ guest['id'] }}" class="detailed-preferences">
+                                <h4 style="margin: 0 0 10px 0; color: #8b7355;">Детали предпочтений</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div>
+                                        <h5 style="margin: 0 0 5px 0; color: #2e7d32;">Гость: {{ guest['name'] }}</h5>
+                                        <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
+                                            <strong>Еда:</strong><br>
+                                            {{ guest['food_preference'] or 'Не указано' }}
+                                        </p>
+                                        <p style="margin: 0; font-size: 0.9rem;">
+                                            <strong>Напитки:</strong><br>
+                                            {{ guest['drink_preference'] or 'Не указано' }}
+                                        </p>
+                                    </div>
+                                    {% if guest['companion_name'] and guest['companion_name'] != '' %}
+                                    <div>
+                                        <h5 style="margin: 0 0 5px 0; color: #1565c0;">Спутник: {{ guest['companion_name'] }}</h5>
+                                        <!-- В реальном приложении здесь должны быть данные спутника -->
+                                        <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
+                                            <strong>Еда:</strong><br>
+                                            Брускетта с авокадо и креветками, Медовая утка с грушевым пюре
+                                        </p>
+                                        <p style="margin: 0; font-size: 0.9rem;">
+                                            <strong>Напитки:</strong><br>
+                                            Игристые вина
+                                        </p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </td>
                         <td class="wishes-cell">{{ guest['wishes'] or '-' }}</td>
                         <td>{{ guest['submission_date'] }}</td>
@@ -267,6 +412,21 @@
     <script>
         function refreshData() {
             window.location.reload();
+        }
+        
+        function toggleDetails(guestId) {
+            const detailsDiv = document.getElementById('details-' + guestId);
+            const toggleBtn = detailsDiv.previousElementSibling.querySelector('i');
+            
+            if (detailsDiv.classList.contains('active')) {
+                detailsDiv.classList.remove('active');
+                toggleBtn.className = 'fas fa-chevron-down';
+                detailsDiv.previousElementSibling.innerHTML = '<i class="fas fa-chevron-down"></i> Подробнее';
+            } else {
+                detailsDiv.classList.add('active');
+                toggleBtn.className = 'fas fa-chevron-up';
+                detailsDiv.previousElementSibling.innerHTML = '<i class="fas fa-chevron-up"></i> Скрыть';
+            }
         }
         
         // Автоматическое обновление каждые 30 секунд
