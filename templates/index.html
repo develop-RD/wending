@@ -9,15 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-    /* Дополнительные стили для карт */
-    .ymaps-2-1-79-map {
-        border-radius: 15px !important;
-    }
-    .ymaps-2-1-79-inner-panes {
-        border-radius: 15px !important;
-    }
-    
-    /* Стили для чекбоксов - ПЕРЕПИСАНО */
+    /* Стили для чекбоксов */
     .checkbox-group {
         display: flex;
         flex-direction: column;
@@ -51,7 +43,7 @@
         left: -9999px !important;
     }
     
-    /* Кастомный квадрат - ПУСТОЙ с обводкой цвета сайта */
+    /* Кастомный квадрат */
     .checkbox-custom {
         width: 22px !important;
         height: 22px !important;
@@ -67,17 +59,17 @@
         box-sizing: border-box !important;
     }
     
-    /* Когда checkbox выбран - квадрат ЗАПОЛНЕН цветом #8b7355 */
+    /* Когда checkbox выбран */
     .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
         background-color: #8b7355 !important;
         border-color: #8b7355 !important;
     }
     
-    /* Галочка ВНУТРИ квадрата - БЕЛАЯ когда квадрат заполнен */
+    /* Галочка */
     .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
         content: '✓' !important;
         position: absolute !important;
-        color: white !important; /* Белая галочка на цветном фоне */
+        color: white !important;
         font-size: 14px !important;
         font-weight: bold !important;
         top: 50% !important;
@@ -92,7 +84,7 @@
         vertical-align: middle !important;
     }
     
-    /* Улучшенные стили для карт */
+    /* Стили для карт */
     .map-container {
         width: 100%;
         height: 300px;
@@ -114,7 +106,7 @@
         font-size: 16px;
     }
     
-    /* Улучшенные стили для адресной секции */
+    /* Стили для адресной секции */
     .addresses-container {
         display: flex;
         flex-wrap: wrap;
@@ -134,334 +126,573 @@
         backdrop-filter: blur(10px);
     }
     
-    /* Отладочный стиль - чтобы увидеть чекбоксы */
-    .checkbox-custom {
-        border: 2px solid #8b7355 !important;
+    /* Стили для главной страницы с фоновым изображением */
+    #home {
+        position: relative;
+        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+                    url('https://komarovo.russian-fishing.ru/wp-content/uploads/sites/2/2023/02/TB2_3139-%E2%80%94-kopiya.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        border-radius: 0 0 20px 20px;
+        margin-bottom: 30px;
+        overflow: hidden;
     }
-
+    
+    .welcome-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+    
+    .welcome-text {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Убираем старые фоновые элементы */
+    .tree, .leaf {
+        display: none;
+    }
+    
+    /* Стили для блоков цветовой гаммы */
+    .color-palette {
+        margin-top: 40px;
+        text-align: center;
+    }
+    
+    .color-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: #8b7355;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    
+    .color-subtitle {
+        color: #7d6b52;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    
+    .color-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .color-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    .color-item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .color-box {
+        width: 80px;
+        height: 80px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+    }
+    
+    .color-box:hover {
+        transform: scale(1.05);
+    }
+    
+    .color-box.selected {
+        border-color: #8b7355;
+        box-shadow: 0 5px 20px rgba(139, 115, 85, 0.3);
+    }
+    
+    .color-name {
+        font-family: 'Open Sans', sans-serif;
+        color: #333;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .color-desc {
+        color: #7d6b52;
+        font-size: 0.8rem;
+        text-align: center;
+        line-height: 1.3;
+    }
+    
+    /* Цветовые варианты */
+    .color-natural {
+        background: linear-gradient(135deg, #8b7355 0%, #a38662 100%);
+    }
+    
+    .color-forest {
+        background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+    }
+    
+    .color-ocean {
+        background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+    }
+    
+    .color-sunset {
+        background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
+    }
+    
+    .color-vote-info {
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(139, 115, 85, 0.1);
+        border-radius: 10px;
+        display: none;
+    }
+    
+    .color-vote-info.show {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
     </style>
 </head>
 <body>
-    <!-- Фоновые элементы для стиля "домик в лесу" -->
-    <div class="tree tree-left"></div>
-    <div class="tree tree-right"></div>
-    <div class="leaf leaf1"></div>
-    <div class="leaf leaf2"></div>
-    <div class="leaf leaf3"></div>
-    <div class="leaf leaf4"></div>
-    
-    <div class="container">
-        <!-- Главная страница -->
-        <section id="home" class="page active">
-            <div class="welcome-section">
-                <div class="welcome-text">
-                    <h1 class="main-title">Свадьба</h1>
-                    <h2 class="couple-name">Дениса <span class="and">&</span> Евгении</h2>
-                    <div class="date">21 августа 2023</div>
-                    <p class="invitation">Дорогие друзья и родные! <br>Приглашаем вас разделить с нами радость в этот особенный день.</p>
-                    <div class="ornament"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Навигационные кнопки -->
-        <nav class="nav-menu">
-            <button class="nav-btn" data-page="home">
-                <i class="fas fa-home"></i>
-                <span>Главная</span>
-            </button>
-            <button class="nav-btn" data-page="address">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Адрес</span>
-            </button>
-            <button class="nav-btn" data-page="menu">
-                <i class="fas fa-utensils"></i>
-                <span>Меню</span>
-            </button>
-            <button class="nav-btn" data-page="guests">
-                <i class="fas fa-users"></i>
-                <span>Гости</span>
-            </button>
-        </nav>
-
-        <!-- Страница с адресами -->
-        <section id="address" class="page">
-            <div class="page-content">
-                <h2 class="page-title"><i class="fas fa-map-signs"></i> Адреса мероприятий</h2>
-                <div class="addresses-container">
-                    <div class="address-card">
-                        <div class="address-icon">
-                            <i class="fas fa-ring"></i>
-                        </div>
-                        <h3>Церемония в ЗАГСе</h3>
-                        <p>Английская набережная 28, Санкт-Петербург</p>
-                        <p class="time"><i class="far fa-clock"></i> Начало в 14:00</p>
-                        <div class="map-container">
-                            <div id="map-zags" class="map-placeholder">
-                                <p>Карта загружается...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="address-card">
-                        <div class="address-icon">
-                            <i class="fas fa-glass-cheers"></i>
-                        </div>
-                        <h3>Праздничный ужин</h3>
-                        <p>Приморское шоссе 452А, Санкт-Петербург</p>
-                        <p class="time"><i class="far fa-clock"></i> Начало в 17:00</p>
-                        <div class="map-container">
-                            <div id="map-party" class="map-placeholder">
-                                <p>Карта загружается...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Страница с меню -->
-        <section id="menu" class="page">
-            <div class="page-content">
-                <h2 class="page-title"><i class="fas fa-utensil-spoon"></i> Меню праздничного ужина</h2>
-                <div class="menu-container">
-                    <div class="menu-category">
-                        <h3><i class="fas fa-fish"></i> Закуски</h3>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Брускетта с авокадо и креветками</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Хрустящий хлеб с нежным авокадо, тигровыми креветками и соусом из лайма.</p>
-                        </div>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Капрезе с сыром буратта</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Свежие томаты, нежный сыр буратта, базилик и оливковое масло холодного отжима.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-category">
-                        <h3><i class="fas fa-drumstick-bite"></i> Основные блюда</h3>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Медовая утка с грушевым пюре</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Утиная грудка в медовом маринаде с нежным грушевым пюре и овощами на гриле.</p>
-                        </div>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Лосось под соусом из шпината</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Филе лосося с крем-соусом из шпината и запеченным картофелем.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-category">
-                        <h3><i class="fas fa-birthday-cake"></i> Десерты</h3>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Свадебный торт "Лесные ягоды"</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Нежные бисквитные коржи с кремом из маскарпоне и свежими лесными ягодами.</p>
-                        </div>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Тирамису в индивидуальной подаче</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Классический итальянский десерт с кофе масала и какао.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="menu-category">
-                        <h3><i class="fas fa-wine-glass-alt"></i> Напитки</h3>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Игристые вина</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Подборка итальянских и французских игристых вин к каждому этапу вечера.</p>
-                        </div>
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <h4>Фирменные коктейли</h4>
-                                <span class="menu-dots"></span>
-                                <span class="menu-price"></span>
-                            </div>
-                            <p class="menu-description">Авторские коктейли "Лесная сказка" и "Любовь в Петербурге".</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Страница для гостей -->
-        <section id="guests" class="page">
-            <div class="page-content">
-                <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
-                <p class="page-subtitle">Пожалуйста, заполните форму ниже, чтобы мы могли подготовиться к вашему приходу</p>
+    <!-- Главная страница -->
+    <section id="home" class="page active">
+        <div class="welcome-section">
+            <div class="welcome-text">
+                <h1 class="main-title">Свадьба</h1>
+                <h2 class="couple-name">Дениса <span class="and">&</span> Евгении</h2>
+                <div class="date">3 сентября 2026</div>
+                <p class="invitation">Дорогие друзья и родные! <br>Приглашаем вас разделить с нами радость в этот особенный день.</p>
+                <div class="ornament"></div>
                 
-                <form id="guest-form" class="guest-form">
-                    <div class="form-group">
-                        <label for="guest-name"><i class="fas fa-user"></i> Ваше имя и фамилия</label>
-                        <input type="text" id="guest-name" name="guest-name" required placeholder="Введите ваше имя">
-                    </div>
+                <!-- Блоки цветовой гаммы -->
+                <div class="color-palette">
+                    <h3 class="color-title">Пожелания к цветовой гамме</h3>
+                    <p class="color-subtitle">Просим Вас выбрать тона для сваьбы<br>Отметьте понравившийся вариант</p>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-calendar-check"></i> Вы придёте на свадьбу?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="attendance" value="yes" required>
-                                <span class="radio-custom"></span>
-                                Да, с удовольствием!
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="attendance" value="no" required>
-                                <span class="radio-custom"></span>
-                                К сожалению, не смогу
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="companion-section" class="hidden">
-                        <h3><i class="fas fa-user-plus"></i> Информация о спутнике</h3>
-                        
-                        <div class="form-group">
-                            <label for="companion-name">Имя и фамилия спутника</label>
-                            <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
+                    <div class="color-grid">
+                        <div class="color-item" data-color="natural">
+                            <div class="color-box color-natural"></div>
+                            <div class="color-name">Натуральный</div>
+                            <div class="color-desc">Древесные тона</div>
                         </div>
                         
-                        <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
-                            <i class="fas fa-user"></i> Ваши предпочтения
-                        </h4>
-                        
-                        <div class="form-group">
-                            <label>Выберите блюда для себя</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-food" value="Брускетта с авокадо и креветками">
-                                    <span class="checkbox-custom"></span>
-                                    Брускетта с авокадо и креветками
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-food" value="Капрезе с сыром буратта">
-                                    <span class="checkbox-custom"></span>
-                                    Капрезе с сыром буратта
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-food" value="Медовая утка с грушевым пюре">
-                                    <span class="checkbox-custom"></span>
-                                    Медовая утка с грушевым пюре
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-food" value="Лосось под соусом из шпината">
-                                    <span class="checkbox-custom"></span>
-                                    Лосось под соусом из шпината
-                                </label>
-                            </div>
+                        <div class="color-item" data-color="forest">
+                            <div class="color-box color-forest"></div>
+                            <div class="color-name">Лесной</div>
+                            <div class="color-desc">Зеленые оттенки</div>
                         </div>
                         
-                        <div class="form-group">
-                            <label>Выберите напитки для себя</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-drink" value="Игристые вина">
-                                    <span class="checkbox-custom"></span>
-                                    Игристые вина
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-drink" value="Фирменные коктейли">
-                                    <span class="checkbox-custom"></span>
-                                    Фирменные коктейли
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="guest-drink" value="Соки и вода">
-                                    <span class="checkbox-custom"></span>
-                                    Соки и вода
-                                </label>
-                            </div>
+                        <div class="color-item" data-color="ocean">
+                            <div class="color-box color-ocean"></div>
+                            <div class="color-name">Океанский</div>
+                            <div class="color-desc">Синие тона</div>
                         </div>
                         
-                        <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
-                            <i class="fas fa-user-friends"></i> Предпочтения спутника
-                        </h4>
-                        
-                        <div class="form-group">
-                            <label>Выберите блюда для спутника</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-food" value="Брускетта с авокадо и креветками">
-                                    <span class="checkbox-custom"></span>
-                                    Брускетта с авокадо и креветками
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-food" value="Капрезе с сыром буратта">
-                                    <span class="checkbox-custom"></span>
-                                    Капрезе с сыром буратта
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-food" value="Медовая утка с грушевым пюре">
-                                    <span class="checkbox-custom"></span>
-                                    Медовая утка с грушевым пюре
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-food" value="Лосось под соусом из шпината">
-                                    <span class="checkbox-custom"></span>
-                                    Лосось под соусом из шпината
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Выберите напитки для спутника</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-drink" value="Игристые вина">
-                                    <span class="checkbox-custom"></span>
-                                    Игристые вина
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-drink" value="Фирменные коктейли">
-                                    <span class="checkbox-custom"></span>
-                                    Фирменные коктейли
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="companion-drink" value="Соки и вода">
-                                    <span class="checkbox-custom"></span>
-                                    Соки и вода
-                                </label>
-                            </div>
+                        <div class="color-item" data-color="sunset">
+                            <div class="color-box color-sunset"></div>
+                            <div class="color-name">Закатный</div>
+                            <div class="color-desc">Теплые тона</div>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="wishes"><i class="fas fa-heart"></i> Ваши пожелания молодоженам</label>
-                        <textarea id="wishes" name="wishes" rows="3" placeholder="Напишите ваши пожелания..."></textarea>
+                    <div id="color-vote-info" class="color-vote-info">
+                        <p style="margin: 0; color: #8b7355; font-weight: 600;">
+                            <i class="fas fa-check-circle"></i> Спасибо за ваш выбор!
+                        </p>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #7d6b52;">
+                            Мы учтём ваши пожелания при оформлении свадьбы
+                        </p>
                     </div>
-                    
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Отправить ответ
-                    </button>
-                    
-                    <div id="response-message" class="hidden"></div>
-                </form>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <!-- Навигационные кнопки -->
+    <nav class="nav-menu">
+        <button class="nav-btn" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Главная</span>
+        </button>
+        <button class="nav-btn" data-page="address">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Адрес</span>
+        </button>
+        <button class="nav-btn" data-page="menu">
+            <i class="fas fa-utensils"></i>
+            <span>Меню</span>
+        </button>
+        <button class="nav-btn" data-page="guests">
+            <i class="fas fa-users"></i>
+            <span>Гости</span>
+        </button>
+    </nav>
+
+    <!-- Остальные секции остаются без изменений -->
+    <!-- Страница с адресами -->
+    <section id="address" class="page">
+        <div class="page-content">
+            <h2 class="page-title"><i class="fas fa-map-signs"></i> Адреса мероприятий</h2>
+            <div class="addresses-container">
+                <div class="address-card">
+                    <div class="address-icon">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <h3>Церемония в ЗАГСе</h3>
+                    <p>Английская набережная 28, Санкт-Петербург</p>
+                    <p class="time"><i class="far fa-clock"></i> Начало в 14:00</p>
+                    <div class="map-container">
+                        <div id="map-zags" class="map-placeholder">
+                            <p>Карта загружается...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="address-card">
+                    <div class="address-icon">
+                        <i class="fas fa-glass-cheers"></i>
+                    </div>
+                    <h3>Праздничный ужин</h3>
+                    <p>Приморское шоссе 452А, Санкт-Петербург</p>
+                    <p class="time"><i class="far fa-clock"></i> Начало в 17:00</p>
+                    <div class="map-container">
+                        <div id="map-party" class="map-placeholder">
+                            <p>Карта загружается...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Страница с меню -->
+    <section id="menu" class="page">
+        <div class="page-content">
+            <h2 class="page-title"><i class="fas fa-utensil-spoon"></i> Меню праздничного ужина</h2>
+            <div class="menu-container">
+                <!-- Меню остаётся без изменений -->
+                <div class="menu-category">
+                    <h3><i class="fas fa-fish"></i> Закуски</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Брускетта с авокадо и креветками</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Хрустящий хлеб с нежным авокадо, тигровыми креветками и соусом из лайма.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Капрезе с сыром буратта</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Свежие томаты, нежный сыр буратта, базилик и оливковое масло холодного отжима.</p>
+                    </div>
+                </div>
+                
+                <div class="menu-category">
+                    <h3><i class="fas fa-drumstick-bite"></i> Основные блюда</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Медовая утка с грушевым пюре</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Утиная грудка в медовом маринаде с нежным грушевым пюре и овощами на гриле.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Лосось под соусом из шпината</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Филе лосося с крем-соусом из шпината и запеченным картофелем.</p>
+                    </div>
+                </div>
+                
+                <div class="menu-category">
+                    <h3><i class="fas fa-birthday-cake"></i> Десерты</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Свадебный торт "Лесные ягоды"</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Нежные бисквитные коржи с кремом из маскарпоне и свежими лесными ягодами.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Тирамису в индивидуальной подаче</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Классический итальянский десерт с кофе масала и какао.</p>
+                    </div>
+                </div>
+                
+                <div class="menu-category">
+                    <h3><i class="fas fa-wine-glass-alt"></i> Напитки</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Игристые вина</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Подборка итальянских и французских игристых вин к каждому этапу вечера.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header">
+                            <h4>Фирменные коктейли</h4>
+                            <span class="menu-dots"></span>
+                            <span class="menu-price"></span>
+                        </div>
+                        <p class="menu-description">Авторские коктейли "Лесная сказка" и "Любовь в Петербурге".</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Страница для гостей -->
+    <section id="guests" class="page">
+        <div class="page-content">
+            <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
+            <p class="page-subtitle">Пожалуйста, заполните форму ниже, чтобы мы могли подготовиться к вашему приходу</p>
+            
+            <form id="guest-form" class="guest-form">
+                <div class="form-group">
+                    <label for="guest-name"><i class="fas fa-user"></i> Ваше имя и фамилия</label>
+                    <input type="text" id="guest-name" name="guest-name" required placeholder="Введите ваше имя">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-check"></i> Вы придёте на свадьбу?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="yes" required>
+                            <span class="radio-custom"></span>
+                            Да, с удовольствием!
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="no" required>
+                            <span class="radio-custom"></span>
+                            К сожалению, не смогу
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="companion-section" class="hidden">
+                    <h3><i class="fas fa-user-plus"></i> Информация о спутнике</h3>
+                    
+                    <div class="form-group">
+                        <label for="companion-name">Имя и фамилия спутника</label>
+                        <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
+                    </div>
+                    
+                    <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                        <i class="fas fa-user"></i> Ваши предпочтения
+                    </h4>
+                    
+                    <div class="form-group">
+                        <label>Выберите блюда для себя</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-food" value="Брускетта с авокадо и креветками">
+                                <span class="checkbox-custom"></span>
+                                Брускетта с авокадо и креветками
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-food" value="Капрезе с сыром буратта">
+                                <span class="checkbox-custom"></span>
+                                Капрезе с сыром буратта
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-food" value="Медовая утка с грушевым пюре">
+                                <span class="checkbox-custom"></span>
+                                Медовая утка с грушевым пюре
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-food" value="Лосось под соусом из шпината">
+                                <span class="checkbox-custom"></span>
+                                Лосось под соусом из шпината
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Выберите напитки для себя</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-drink" value="Игристые вина">
+                                <span class="checkbox-custom"></span>
+                                Игристые вина
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-drink" value="Фирменные коктейли">
+                                <span class="checkbox-custom"></span>
+                                Фирменные коктейли
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="guest-drink" value="Соки и вода">
+                                <span class="checkbox-custom"></span>
+                                Соки и вода
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                        <i class="fas fa-user-friends"></i> Предпочтения спутника
+                    </h4>
+                    
+                    <div class="form-group">
+                        <label>Выберите блюда для спутника</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-food" value="Брускетта с авокадо и креветками">
+                                <span class="checkbox-custom"></span>
+                                Брускетта с авокадо и креветками
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-food" value="Капрезе с сыром буратта">
+                                <span class="checkbox-custom"></span>
+                                Капрезе с сыром буратта
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-food" value="Медовая утка с грушевым пюре">
+                                <span class="checkbox-custom"></span>
+                                Медовая утка с грушевым пюре
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-food" value="Лосось под соусом из шпината">
+                                <span class="checkbox-custom"></span>
+                                Лосось под соусом из шпината
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Выберите напитки для спутника</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-drink" value="Игристые вина">
+                                <span class="checkbox-custom"></span>
+                                Игристые вина
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-drink" value="Фирменные коктейли">
+                                <span class="checkbox-custom"></span>
+                                Фирменные коктейли
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="companion-drink" value="Соки и вода">
+                                <span class="checkbox-custom"></span>
+                                Соки и вода
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wishes"><i class="fas fa-heart"></i> Ваши пожелания молодоженам</label>
+                    <textarea id="wishes" name="wishes" rows="3" placeholder="Напишите ваши пожелания..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Отправить ответ
+                </button>
+                
+                <div id="response-message" class="hidden"></div>
+            </form>
+        </div>
+    </section>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_яндкс_карт&lang=ru_RU"></script>
+    
+    <script>
+    // Функциональность для выбора цветовой гаммы
+    $(document).ready(function() {
+        // Инициализация навигации (код из script.js)
+        $('#home').addClass('active');
+        $('.nav-btn[data-page="home"]').addClass('active');
+        
+        $('.nav-btn').on('click', function() {
+            const pageId = $(this).data('page');
+            $('.page').removeClass('active');
+            $('#' + pageId).addClass('active');
+            $('.nav-btn').removeClass('active');
+            $(this).addClass('active');
+        });
+        
+        // Обработка выбора цветовой гаммы
+        $('.color-item').on('click', function() {
+            const selectedColor = $(this).data('color');
+            
+            // Снимаем выделение со всех
+            $('.color-box').removeClass('selected');
+            
+            // Добавляем выделение выбранному
+            $(this).find('.color-box').addClass('selected');
+            
+        });
+        
+        // Восстанавливаем выбор из localStorage при загрузке
+        
+        // Инициализация карт и формы гостей (должны быть в script.js)
+        initMaps();
+        
+        $('#guest-form').on('submit', function(e) {
+            e.preventDefault();
+            submitGuestForm();
+        });
+        
+        $('input[name="attendance"]').on('change', function() {
+            if ($(this).val() === 'yes') {
+                $('#companion-section').removeClass('hidden');
+                $('#companion-name').prop('required', true);
+            } else {
+                $('#companion-section').addClass('hidden');
+                $('#companion-name').prop('required', false);
+            }
+        });
+    });
+    
+    // Функции initMaps, submitGuestForm, showResponseMessage должны быть определены в script.js
+    </script>
 </body>
 </html>
