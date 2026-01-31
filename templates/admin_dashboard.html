@@ -302,98 +302,80 @@
                             -
                             {% endif %}
                         </td>
+
                         <td class="preferences-container">
-                            {% if guest['attendance'] == 'yes' %}
-                                <div class="preference-section">
-                                    <span class="preference-label">Гость ({{ guest['name'] }})</span>
-                                    {% if guest['food_preference'] %}
-                                        <div style="margin-bottom: 5px;">
-                                            <strong>Еда:</strong>
-                                            {% set food_items = guest['food_preference'].split(',') if guest['food_preference'] else [] %}
-                                            {% for item in food_items %}
-                                                {% set item = item.strip() %}
-                                                {% if item %}
-                                                    <span class="preference-badge guest-badge">{{ item }}</span>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    
-                                    {% if guest['drink_preference'] %}
-                                        <div>
-                                            <strong>Напитки:</strong>
-                                            {% set drink_items = guest['drink_preference'].split(',') if guest['drink_preference'] else [] %}
-                                            {% for item in drink_items %}
-                                                {% set item = item.strip() %}
-                                                {% if item %}
-                                                    <span class="preference-badge guest-badge">{{ item }}</span>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    
-                                    {% if not guest['food_preference'] and not guest['drink_preference'] %}
-                                        <span style="color: #999; font-style: italic;">Не указано</span>
-                                    {% endif %}
-                                </div>
-                                
-                                {% if guest['companion_name'] and guest['companion_name'] != '' %}
-                                <div class="preference-section" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2d9c9;">
-                                    <span class="preference-label">Спутник ({{ guest['companion_name'] }})</span>
-                                    {% if guest['food_preference'] or guest['drink_preference'] %}
-                                        <!-- Для демонстрации - в реальном приложении здесь должны быть отдельные поля для спутника -->
-                                        <div style="margin-bottom: 5px;">
-                                            <strong>Еда:</strong>
-                                            <span class="preference-badge companion-badge">Брускетта с авокадо и креветками</span>
-                                            <span class="preference-badge companion-badge">Медовая утка с грушевым пюре</span>
-                                        </div>
-                                        <div>
-                                            <strong>Напитки:</strong>
-                                            <span class="preference-badge companion-badge">Игристые вина</span>
-                                        </div>
-                                    {% else %}
-                                        <span style="color: #999; font-style: italic;">Не указано</span>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
-                            {% else %}
-                                <span style="color: #999; font-style: italic;">Гость не придет</span>
+    {% if guest['attendance'] == 'yes' %}
+        <div class="preference-section">
+            <span class="preference-label">Гость ({{ guest['name'] }})</span>
+            {% if guest['guest_food_preference'] or guest['guest_drink_preference'] %}
+                {% if guest['guest_food_preference'] %}
+                    <div style="margin-bottom: 5px;">
+                        <strong>Еда:</strong>
+                        {% set food_items = guest['guest_food_preference'].split(',') if guest['guest_food_preference'] else [] %}
+                        {% for item in food_items %}
+                            {% set item = item.strip() %}
+                            {% if item %}
+                                <span class="preference-badge guest-badge">{{ item }}</span>
                             {% endif %}
-                            
-                            <div class="details-toggle" onclick="toggleDetails({{ guest['id'] }})">
-                                <i class="fas fa-chevron-down"></i> Подробнее
-                            </div>
-                            <div id="details-{{ guest['id'] }}" class="detailed-preferences">
-                                <h4 style="margin: 0 0 10px 0; color: #8b7355;">Детали предпочтений</h4>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                    <div>
-                                        <h5 style="margin: 0 0 5px 0; color: #2e7d32;">Гость: {{ guest['name'] }}</h5>
-                                        <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
-                                            <strong>Еда:</strong><br>
-                                            {{ guest['food_preference'] or 'Не указано' }}
-                                        </p>
-                                        <p style="margin: 0; font-size: 0.9rem;">
-                                            <strong>Напитки:</strong><br>
-                                            {{ guest['drink_preference'] or 'Не указано' }}
-                                        </p>
-                                    </div>
-                                    {% if guest['companion_name'] and guest['companion_name'] != '' %}
-                                    <div>
-                                        <h5 style="margin: 0 0 5px 0; color: #1565c0;">Спутник: {{ guest['companion_name'] }}</h5>
-                                        <!-- В реальном приложении здесь должны быть данные спутника -->
-                                        <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
-                                            <strong>Еда:</strong><br>
-                                            Брускетта с авокадо и креветками, Медовая утка с грушевым пюре
-                                        </p>
-                                        <p style="margin: 0; font-size: 0.9rem;">
-                                            <strong>Напитки:</strong><br>
-                                            Игристые вина
-                                        </p>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </td>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if guest['guest_drink_preference'] %}
+                    <div>
+                        <strong>Напитки:</strong>
+                        {% set drink_items = guest['guest_drink_preference'].split(',') if guest['guest_drink_preference'] else [] %}
+                        {% for item in drink_items %}
+                            {% set item = item.strip() %}
+                            {% if item %}
+                                <span class="preference-badge guest-badge">{{ item }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <span style="color: #999; font-style: italic;">Не указано</span>
+            {% endif %}
+        </div>
+        
+        {% if guest['companion_name'] and guest['companion_name'] != '' %}
+        <div class="preference-section" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2d9c9;">
+            <span class="preference-label">Спутник ({{ guest['companion_name'] }})</span>
+            {% if guest['companion_food_preference'] or guest['companion_drink_preference'] %}
+                {% if guest['companion_food_preference'] %}
+                    <div style="margin-bottom: 5px;">
+                        <strong>Еда:</strong>
+                        {% set food_items = guest['companion_food_preference'].split(',') if guest['companion_food_preference'] else [] %}
+                        {% for item in food_items %}
+                            {% set item = item.strip() %}
+                            {% if item %}
+                                <span class="preference-badge companion-badge">{{ item }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if guest['companion_drink_preference'] %}
+                    <div>
+                        <strong>Напитки:</strong>
+                        {% set drink_items = guest['companion_drink_preference'].split(',') if guest['companion_drink_preference'] else [] %}
+                        {% for item in drink_items %}
+                            {% set item = item.strip() %}
+                            {% if item %}
+                                <span class="preference-badge companion-badge">{{ item }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <span style="color: #999; font-style: italic;">Не указано</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <span style="color: #999; font-style: italic;">Гость не придет</span>
+    {% endif %}
+</td>
                         <td class="wishes-cell">{{ guest['wishes'] or '-' }}</td>
                         <td>{{ guest['submission_date'] }}</td>
                     </tr>

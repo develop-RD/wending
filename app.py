@@ -75,25 +75,30 @@ def init_db():
     with get_db_connection() as conn:
         cursor = conn.cursor()
         
-        # Таблица гостей
+        # Таблица гостей с отдельными полями для предпочтений
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS guests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 attendance TEXT NOT NULL CHECK(attendance IN ('yes', 'no')),
                 companion_name TEXT,
-                food_preference TEXT,
-                drink_preference TEXT,
+                guest_food_preference TEXT,  -- Отдельное поле для еды гостя
+                guest_drink_preference TEXT, -- Отдельное поле для напитков гостя
+                companion_food_preference TEXT,  -- Отдельное поле для еды спутника
+                companion_drink_preference TEXT, -- Отдельное поле для напитков спутника
                 wishes TEXT,
                 submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
         
-        # Индексы для ускорения поиска
+        # Индексы
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_attendance ON guests(attendance)')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_submission_date ON guests(submission_date)')
         
         conn.commit()
+
+
+
 
 # Декоратор для защиты админ-панели
 def login_required(f):
@@ -121,56 +126,46 @@ def save_guest():
         if data.get('attendance') not in ['yes', 'no']:
             return jsonify({"success": False, "message": "Неверный статус присутствия"})
         
-        # Обработка выбранных блюд и напитков для гостя
+        # Подготовка данных для гостя
         guest_food_list = data.get('guestFood', [])
         guest_drink_list = data.get('guestDrink', [])
         
-        # Обработка выбранных блюд и напитков для спутника
+        # Подготовка данных для спутника
         companion_food_list = data.get('companionFood', [])
         companion_drink_list = data.get('companionDrink', [])
         
-        # Объединяем все выбранные блюда и напитки
-        all_food = []
-        all_drinks = []
+        # Формируем строки для сохранения
+        guest_food_str = ', '.join(guest_food_list) if guest_food_list else None
+        guest_drink_str = ', '.join(guest_drink_list) if guest_drink_list else None
+        companion_food_str = ', '.join(companion_food_list) if companion_food_list else None
+        companion_drink_str = ', '.join(companion_drink_list) if companion_drink_list else None
         
-        if guest_food_list:
-            all_food.extend(guest_food_list)
-        
-        if companion_food_list:
-            all_food.extend(companion_food_list)
-        
-        if guest_drink_list:
-            all_drinks.extend(guest_drink_list)
-        
-        if companion_drink_list:
-            all_drinks.extend(companion_drink_list)
-        
-        # Формируем строки для сохранения в БД
-        food_preference_str = ', '.join(all_food) if all_food else None
-        drink_preference_str = ', '.join(all_drinks) if all_drinks else None
-        
-        # Подготовка данных
+        # Подготовка данных для вставки
         guest_data = (
             data.get('name', '').strip(),
             data.get('attendance'),
             data.get('companion', '').strip() if data.get('companion') else None,
-            food_preference_str,
-            drink_preference_str,
+            guest_food_str,        # Еда гостя
+            guest_drink_str,       # Напитки гостя
+            companion_food_str,    # Еда спутника
+            companion_drink_str,   # Напитки спутника
             data.get('wishes', '').strip()[:1000] if data.get('wishes') else None
         )
-        print("guest = ",guest_food_list);
-        print("guest = ",guest_drink_list);
-        print("comp = ",companion_food_list);
-        print("comp = ",companion_drink_list);
         
-        # Сохранение в БД с блокировкой
+        print(f"Гость: еда={guest_food_str}, напитки={guest_drink_str}")
+        print(f"Спутник: еда={companion_food_str}, напитки={companion_drink_str}")
+        
+        # Сохранение в БД
         with db_lock:
             with get_db_connection() as conn:
                 cursor = conn.cursor()
                 
                 cursor.execute('''
-                    INSERT INTO guests (name, attendance, companion_name, food_preference, drink_preference, wishes)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO guests (name, attendance, companion_name, 
+                                       guest_food_preference, guest_drink_preference,
+                                       companion_food_preference, companion_drink_preference, 
+                                       wishes)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 ''', guest_data)
                 
                 conn.commit()
@@ -187,7 +182,6 @@ def save_guest():
         
     except sqlite3.Error as e:
         print(f"Ошибка базы данных при сохранении гостя: {e}")
-        # Проверяем, не связана ли ошибка с блокировкой
         if "database is locked" in str(e):
             return jsonify({
                 "success": False, 
@@ -197,6 +191,7 @@ def save_guest():
     except Exception as e:
         print(f"Общая ошибка при сохранении гостя: {e}")
         return jsonify({"success": False, "message": "Произошла непредвиденная ошибка"})
+
 
 # Административная панель
 @app.route('/admin')
@@ -234,11 +229,10 @@ def admin_dashboard():
             with get_db_connection() as conn:
                 cursor = conn.cursor()
                 
-                # Получаем всех гостей
                 cursor.execute("SELECT * FROM guests ORDER BY submission_date DESC")
                 guests = cursor.fetchall()
                 
-                # Статистика
+                # Статистика (без изменений)
                 cursor.execute("SELECT COUNT(*) as total FROM guests")
                 total_guests = cursor.fetchone()['total']
                 
@@ -262,39 +256,48 @@ def admin_dashboard():
                 companions_count = cursor.fetchone()['companions']
                 total_participants = attending_guests + companions_count
                 
-                # Статистика по предпочтениям - переделана для анализа отдельных блюд
+                # Собираем ВСЕ предпочтения в еде и напитках
                 all_food_items = []
                 all_drink_items = []
                 
-                # Собираем все предпочтения в еде
-                cursor.execute("SELECT food_preference FROM guests WHERE food_preference IS NOT NULL AND food_preference != ''")
-                food_rows = cursor.fetchall()
-                for row in food_rows:
-                    items = [item.strip() for item in row['food_preference'].split(',') if item.strip()]
+                # Предпочтения гостей
+                cursor.execute("SELECT guest_food_preference FROM guests WHERE guest_food_preference IS NOT NULL AND guest_food_preference != ''")
+                guest_food_rows = cursor.fetchall()
+                for row in guest_food_rows:
+                    items = [item.strip() for item in row['guest_food_preference'].split(',') if item.strip()]
                     all_food_items.extend(items)
                 
-                # Собираем все предпочтения в напитках
-                cursor.execute("SELECT drink_preference FROM guests WHERE drink_preference IS NOT NULL AND drink_preference != ''")
-                drink_rows = cursor.fetchall()
-                for row in drink_rows:
-                    items = [item.strip() for item in row['drink_preference'].split(',') if item.strip()]
+                cursor.execute("SELECT guest_drink_preference FROM guests WHERE guest_drink_preference IS NOT NULL AND guest_drink_preference != ''")
+                guest_drink_rows = cursor.fetchall()
+                for row in guest_drink_rows:
+                    items = [item.strip() for item in row['guest_drink_preference'].split(',') if item.strip()]
                     all_drink_items.extend(items)
                 
-                # Подсчитываем статистику по каждому блюду
+                # Предпочтения спутников
+                cursor.execute("SELECT companion_food_preference FROM guests WHERE companion_food_preference IS NOT NULL AND companion_food_preference != ''")
+                companion_food_rows = cursor.fetchall()
+                for row in companion_food_rows:
+                    items = [item.strip() for item in row['companion_food_preference'].split(',') if item.strip()]
+                    all_food_items.extend(items)
+                
+                cursor.execute("SELECT companion_drink_preference FROM guests WHERE companion_drink_preference IS NOT NULL AND companion_drink_preference != ''")
+                companion_drink_rows = cursor.fetchall()
+                for row in companion_drink_rows:
+                    items = [item.strip() for item in row['companion_drink_preference'].split(',') if item.strip()]
+                    all_drink_items.extend(items)
+                
+                # Подсчитываем статистику
                 food_stats_dict = {}
                 for item in all_food_items:
                     food_stats_dict[item] = food_stats_dict.get(item, 0) + 1
                 
-                # Сортируем по количеству выборов
                 food_stats = [{'food_preference': item, 'count': count} 
                             for item, count in sorted(food_stats_dict.items(), key=lambda x: x[1], reverse=True)]
                 
-                # Подсчитываем статистику по каждому напитку
                 drink_stats_dict = {}
                 for item in all_drink_items:
                     drink_stats_dict[item] = drink_stats_dict.get(item, 0) + 1
                 
-                # Сортируем по количеству выборов
                 drink_stats = [{'drink_preference': item, 'count': count} 
                               for item, count in sorted(drink_stats_dict.items(), key=lambda x: x[1], reverse=True)]
                 
@@ -317,6 +320,7 @@ def admin_dashboard():
         print(f"Ошибка БД при загрузке админки: {e}")
         return "Ошибка базы данных. Пожалуйста, попробуйте позже.", 500
 
+
 # Экспорт данных
 @app.route('/admin/export')
 @login_required
@@ -334,8 +338,10 @@ def export_data():
         output = StringIO()
         writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         
-        writer.writerow(['ID', 'Имя', 'Присутствие', 'Спутник', 'Предпочтения в еде', 
-                        'Предпочтения в напитках', 'Пожелания', 'Дата ответа'])
+        writer.writerow(['ID', 'Имя', 'Присутствие', 'Спутник', 
+                        'Еда гостя', 'Напитки гостя',
+                        'Еда спутника', 'Напитки спутника',
+                        'Пожелания', 'Дата ответа'])
         
         for guest in guests:
             writer.writerow([
@@ -343,8 +349,10 @@ def export_data():
                 guest['name'],
                 'Да' if guest['attendance'] == 'yes' else 'Нет',
                 guest['companion_name'] or '',
-                guest['food_preference'] or '',
-                guest['drink_preference'] or '',
+                guest['guest_food_preference'] or '',
+                guest['guest_drink_preference'] or '',
+                guest['companion_food_preference'] or '',
+                guest['companion_drink_preference'] or '',
                 guest['wishes'] or '',
                 guest['submission_date']
             ])

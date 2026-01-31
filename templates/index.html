@@ -488,96 +488,113 @@
     </section>
 
     <!-- Страница для гостей -->
-    <section id="guests" class="page">
-        <div class="page-content">
-            <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
-            <p class="page-subtitle">Пожалуйста, заполните форму ниже, чтобы мы могли подготовиться к вашему приходу</p>
+<!-- В секции #guests замените текущий блок с предпочтениями на этот -->
+
+<section id="guests" class="page">
+    <div class="page-content">
+        <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
+        <p class="page-subtitle">Пожалуйста, заполните форму ниже, чтобы мы могли подготовиться к вашему приходу</p>
+        
+        <form id="guest-form" class="guest-form">
+            <div class="form-group">
+                <label for="guest-name"><i class="fas fa-user"></i> Ваше имя и фамилия</label>
+                <input type="text" id="guest-name" name="guest-name" required placeholder="Введите ваше имя">
+            </div>
             
-            <form id="guest-form" class="guest-form">
+            <div class="form-group">
+                <label><i class="fas fa-calendar-check"></i> Вы придёте на свадьбу?</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="attendance" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Да, с удовольствием!
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="attendance" value="no" required>
+                        <span class="radio-custom"></span>
+                        К сожалению, не смогу
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Блок меню для гостя -->
+            <div id="guest-menu-section" class="hidden">
+                <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                    <i class="fas fa-utensils"></i> Ваши предпочтения в меню
+                </h3>
+                
                 <div class="form-group">
-                    <label for="guest-name"><i class="fas fa-user"></i> Ваше имя и фамилия</label>
-                    <input type="text" id="guest-name" name="guest-name" required placeholder="Введите ваше имя">
+                    <label>Выберите блюда для себя</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-food" value="Брускетта с авокадо и креветками">
+                            <span class="checkbox-custom"></span>
+                            Брускетта с авокадо и креветками
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-food" value="Капрезе с сыром буратта">
+                            <span class="checkbox-custom"></span>
+                            Капрезе с сыром буратта
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-food" value="Медовая утка с грушевым пюре">
+                            <span class="checkbox-custom"></span>
+                            Медовая утка с грушевым пюре
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-food" value="Лосось под соусом из шпината">
+                            <span class="checkbox-custom"></span>
+                            Лосось под соусом из шпината
+                        </label>
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label><i class="fas fa-calendar-check"></i> Вы придёте на свадьбу?</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="attendance" value="yes" required>
-                            <span class="radio-custom"></span>
-                            Да, с удовольствием!
+                    <label>Выберите напитки для себя</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-drink" value="Игристые вина">
+                            <span class="checkbox-custom"></span>
+                            Игристые вина
                         </label>
-                        <label class="radio-label">
-                            <input type="radio" name="attendance" value="no" required>
-                            <span class="radio-custom"></span>
-                            К сожалению, не смогу
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-drink" value="Фирменные коктейли">
+                            <span class="checkbox-custom"></span>
+                            Фирменные коктейли
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="guest-drink" value="Соки и вода">
+                            <span class="checkbox-custom"></span>
+                            Соки и вода
                         </label>
                     </div>
                 </div>
                 
-                <div id="companion-section" class="hidden">
-                    <h3><i class="fas fa-user-plus"></i> Информация о спутнике</h3>
-                    
-                    <div class="form-group">
-                        <label for="companion-name">Имя и фамилия спутника</label>
-                        <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
-                    </div>
-                    
-                    <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
-                        <i class="fas fa-user"></i> Ваши предпочтения
-                    </h4>
-                    
-                    <div class="form-group">
-                        <label>Выберите блюда для себя</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-food" value="Брускетта с авокадо и креветками">
-                                <span class="checkbox-custom"></span>
-                                Брускетта с авокадо и креветками
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-food" value="Капрезе с сыром буратта">
-                                <span class="checkbox-custom"></span>
-                                Капрезе с сыром буратта
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-food" value="Медовая утка с грушевым пюре">
-                                <span class="checkbox-custom"></span>
-                                Медовая утка с грушевым пюре
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-food" value="Лосось под соусом из шпината">
-                                <span class="checkbox-custom"></span>
-                                Лосось под соусом из шпината
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Выберите напитки для себя</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-drink" value="Игристые вина">
-                                <span class="checkbox-custom"></span>
-                                Игристые вина
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-drink" value="Фирменные коктейли">
-                                <span class="checkbox-custom"></span>
-                                Фирменные коктейли
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="guest-drink" value="Соки и вода">
-                                <span class="checkbox-custom"></span>
-                                Соки и вода
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
-                        <i class="fas fa-user-friends"></i> Предпочтения спутника
-                    </h4>
-                    
+                <!-- Кнопка добавления спутника -->
+                <div class="form-group" style="text-align: center; margin-top: 30px;">
+                    <button type="button" id="add-companion-btn" class="submit-btn" style="background-color: #7d6b52; margin: 0;">
+                        <i class="fas fa-user-plus"></i> Добавить спутника
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Блок спутника -->
+            <div id="companion-section" class="hidden">
+                <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                    <i class="fas fa-user-friends"></i> Информация о спутнике
+                </h3>
+                
+                <div class="form-group">
+                    <label for="companion-name">Имя и фамилия спутника</label>
+                    <input type="text" id="companion-name" name="companion-name" placeholder="Введите имя спутника">
+                </div>
+                
+                <div id="companion-menu-section" class="hidden">
+                <h4 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                    <i class="fas fa-utensils"></i> Предпочтения спутника в меню
+                </h4>      
+
+
                     <div class="form-group">
                         <label>Выберите блюда для спутника</label>
                         <div class="checkbox-group">
@@ -625,21 +642,23 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="wishes"><i class="fas fa-heart"></i> Ваши пожелания молодоженам</label>
-                    <textarea id="wishes" name="wishes" rows="3" placeholder="Напишите ваши пожелания..."></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i> Отправить ответ
-                </button>
-                
-                <div id="response-message" class="hidden"></div>
-            </form>
-        </div>
-    </section>
+            </div>
+            
+            <div class="form-group">
+                <label for="wishes"><i class="fas fa-heart"></i> Ваши пожелания молодоженам</label>
+                <textarea id="wishes" name="wishes" rows="3" placeholder="Напишите ваши пожелания..."></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Отправить ответ
+            </button>
+            
+            <div id="response-message" class="hidden"></div>
+        </form>
     </div>
+</section>
+
+</div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_яндкс_карт&lang=ru_RU"></script>

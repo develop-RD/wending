@@ -20,7 +20,30 @@ $(document).ready(function() {
     
     // Инициализация Яндекс карт
     initMaps();
+
+     // Обработка радио-кнопок присутствия
+    $('input[name="attendance"]').on('change', function() {
+        if ($(this).val() === 'yes') {
+            $('#guest-menu-section').removeClass('hidden');
+            $('#companion-section').addClass('hidden'); // Скрываем спутника полностью
+        } else {
+            $('#guest-menu-section').addClass('hidden');
+            $('#companion-section').addClass('hidden');
+        }
+    });
     
+    // Обработка кнопки добавления спутника
+    $('#add-companion-btn').on('click', function() {
+        // Показываем секцию спутника
+        $('#companion-section').removeClass('hidden');
+        // Показываем меню для спутника
+        $('#companion-menu-section').removeClass('hidden');
+        
+        $('#companion-name').prop('required', true);
+        $(this).prop('disabled', true).text('Спутник добавлен').css('background-color', '#5a4a3a');
+    });
+
+
     // Обработка формы гостей
     $('#guest-form').on('submit', function(e) {
         e.preventDefault();

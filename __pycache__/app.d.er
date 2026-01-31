@@ -1,4 +1,4 @@
-##[pylyzer] failed /home/dean/website/app.py 1769849084 18669
+##[pylyzer] failed /home/dean/website/app.py 1769851388 19763
 .___v_desugar_1: Never
 .Flask: Never
 .render_template: Never
@@ -31,7 +31,7 @@
 .get_db_connection: () -> Never
 .get_db_cursor: () -> Never
 .init_db: () -> Never
-.login_required: |Type_5557: Type|(f: () -> Type_5557) -> (*args: Obj, **kwargs := ?Type_5553) -> Never
+.login_required: |Type_7490: Type|(f: () -> Type_7490) -> (*args: Obj, **kwargs := ?Type_7486) -> Never
 .index: () -> Never
 .save_guest: () -> Never
 .admin_login_page: () -> Never
