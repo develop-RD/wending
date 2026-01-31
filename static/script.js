@@ -25,6 +25,7 @@ $(document).ready(function() {
     $('#guest-form').on('submit', function(e) {
         e.preventDefault();
         submitGuestForm();
+        console.log('sending!')
     });
     
     // Показать/скрыть раздел о спутнике
@@ -109,7 +110,7 @@ $(document).ready(function() {
                 </div>
                 <h4 style="margin:10px 0;color:#8b7355;">ЗАГС на Английской набережной 28</h4>
                 <p style="margin:5px 0;">Санкт-Петербург</p>
-                <p style="margin:5px 0;"><strong>Начало в 14:00</strong></p>
+                <p style="margin:5px 0;"><strong>Начало в 11:00</strong></p>
                 <p style="margin:5px 0;">21 августа 2023</p>
                 <div style="margin-top:20px;padding:10px;background:rgba(139,115,85,0.1);border-radius:10px;">
                     <p style="margin:0;font-size:14px;color:#666;">📍 Отметка места на карте</p>
@@ -124,7 +125,7 @@ $(document).ready(function() {
                 </div>
                 <h4 style="margin:10px 0;color:#8b7355;">Банкетный зал "Лесная сказка"</h4>
                 <p style="margin:5px 0;">Приморское шоссе 452А</p>
-                <p style="margin:5px 0;"><strong>Начало в 17:00</strong></p>
+                <p style="margin:5px 0;"><strong>Начало в 14:00</strong></p>
                 <p style="margin:5px 0;">21 августа 2023</p>
                 <div style="margin-top:20px;padding:10px;background:rgba(139,115,85,0.1);border-radius:10px;">
                     <p style="margin:0;font-size:14px;color:#666;">📍 Отметка места на карте</p>
@@ -140,6 +141,8 @@ $(document).ready(function() {
     $('input[name="guest-food"]:checked').each(function() {
         guestFood.push($(this).val());
     });
+    
+    console.log('guestFood',guestFood);
     
     const guestDrink = [];
     $('input[name="guest-drink"]:checked').each(function() {

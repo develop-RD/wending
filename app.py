@@ -158,6 +158,10 @@ def save_guest():
             drink_preference_str,
             data.get('wishes', '').strip()[:1000] if data.get('wishes') else None
         )
+        print("guest = ",guest_food_list);
+        print("guest = ",guest_drink_list);
+        print("comp = ",companion_food_list);
+        print("comp = ",companion_drink_list);
         
         # Сохранение в БД с блокировкой
         with db_lock:
@@ -411,7 +415,7 @@ if __name__ == '__main__':
     
     print(f"Для входа в админ-панель:")
     print(f"Логин: {os.environ.get('ADMIN_USERNAME', 'admin')}")
-    print(f"Пароль: {os.environ.get('ADMIN_PASSWORD', 'wedding2023')}")
+    print(f"Пароль: {os.environ.get('ADMIN_PASSWORD', 'wedding2025')}")
     print(f"Админ-панель: http://localhost:5000/admin")
     
     # Запускаем периодическую очистку
@@ -420,9 +424,9 @@ if __name__ == '__main__':
     
     # Настройки для разработки
     app.run(
-        host="localhost",
+        host="192.168.0.110",
         debug=True, 
-        port=8020,
+        port=8080,
         threaded=True,  # Разрешаем многопоточность
         processes=1     # Используем только один процесс для SQLite
     )
