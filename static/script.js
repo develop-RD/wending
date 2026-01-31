@@ -20,15 +20,39 @@ $(document).ready(function() {
     
     // Инициализация Яндекс карт
     initMaps();
-
-     // Обработка радио-кнопок присутствия
+    
+    // Убедимся, что меню гостя и спутника скрыты при загрузке
+    $('#guest-menu-section').addClass('hidden');
+    $('#companion-section').addClass('hidden');
+    $('#add-companion-btn').prop('disabled', false).text('Добавить спутника').css('background-color', '#7d6b52');
+    
+    // Обработка радио-кнопок присутствия
     $('input[name="attendance"]').on('change', function() {
         if ($(this).val() === 'yes') {
+            // ПОКАЗЫВАЕМ меню для гостя
             $('#guest-menu-section').removeClass('hidden');
-            $('#companion-section').addClass('hidden'); // Скрываем спутника полностью
-        } else {
+            
+            // СКРЫВАЕМ секцию спутника (на случай если ранее показывали)
+            $('#companion-section').addClass('hidden');
+            $('#companion-menu-section').addClass('hidden');
+            
+            // Восстанавливаем кнопку добавления спутника
+            $('#add-companion-btn').prop('disabled', false).text('Добавить спутника').css('background-color', '#7d6b52');
+            
+            // Делаем поля спутника НЕ обязательными (пока не добавили)
+            $('#companion-name').prop('required', false);
+            
+        } else if ($(this).val() === 'no') {
+            // Если гость не придет - скрываем ВСЕ меню
             $('#guest-menu-section').addClass('hidden');
             $('#companion-section').addClass('hidden');
+            $('#companion-menu-section').addClass('hidden');
+            
+            // Восстанавливаем кнопку
+            $('#add-companion-btn').prop('disabled', false).text('Добавить спутника').css('background-color', '#7d6b52');
+            
+            // Убираем обязательность полей спутника
+            $('#companion-name').prop('required', false);
         }
     });
     
@@ -39,29 +63,18 @@ $(document).ready(function() {
         // Показываем меню для спутника
         $('#companion-menu-section').removeClass('hidden');
         
+        // Делаем имя спутника обязательным
         $('#companion-name').prop('required', true);
+        
+        // Блокируем кнопку и меняем текст
         $(this).prop('disabled', true).text('Спутник добавлен').css('background-color', '#5a4a3a');
     });
-
-
+    
     // Обработка формы гостей
     $('#guest-form').on('submit', function(e) {
         e.preventDefault();
         submitGuestForm();
         console.log('sending!')
-    });
-    
-    // Показать/скрыть раздел о спутнике
-    $('input[name="attendance"]').on('change', function() {
-        if ($(this).val() === 'yes') {
-            $('#companion-section').removeClass('hidden');
-            // Делаем поля спутника обязательными, если гость придет
-            $('#companion-name').prop('required', true);
-        } else {
-            $('#companion-section').addClass('hidden');
-            // Убираем обязательность полей спутника, если гость не придет
-            $('#companion-name').prop('required', false);
-        }
     });
     
     // Функция инициализации карт
@@ -160,68 +173,93 @@ $(document).ready(function() {
     // Функция отправки формы гостя
     function submitGuestForm() {
         // Собираем данные о выбранных блюдах и напитках для гостя
-  const guestFood = [];
-    $('input[name="guest-food"]:checked').each(function() {
-        guestFood.push($(this).val());
-    });
-    
-    console.log('guestFood',guestFood);
-    
-    const guestDrink = [];
-    $('input[name="guest-drink"]:checked').each(function() {
-        guestDrink.push($(this).val());
-    });
-    
-    // Собираем данные о выбранных блюдах и напитках для спутника
-    const companionFood = [];
-    $('input[name="companion-food"]:checked').each(function() {
-        companionFood.push($(this).val());
-    });
-    
-    const companionDrink = [];
-    $('input[name="companion-drink"]:checked').each(function() {
-        companionDrink.push($(this).val());
-    });
-    
-    const formData = {
-        name: $('#guest-name').val(),
-        attendance: $('input[name="attendance"]:checked').val(),
-        companion: $('#companion-name').val(),
-        guestFood: guestFood,
-        guestDrink: guestDrink,
-        companionFood: companionFood,
-        companionDrink: companionDrink,
-        wishes: $('#wishes').val()
-    };
-    
-    // Проверка заполнения формы
-    if (!formData.name || !formData.attendance) {
-        showResponseMessage('Пожалуйста, заполните обязательные поля', 'error');
-        return;
-    }
-    
-    // Отправка данных на сервер
-    $.ajax({
-        url: '/save_guest',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        success: function(response) {
-            if (response.success) {
-                showResponseMessage(response.message, 'success');
-                // Очищаем форму после успешной отправки
-                $('#guest-form')[0].reset();
-                $('#companion-section').addClass('hidden');
-                // Сбрасываем все checkbox
-                $('input[type="checkbox"]').prop('checked', false);
-            } else {
-                showResponseMessage(response.message, 'error');
-            }
-        },
-        error: function() {
-            showResponseMessage('Ошибка при отправке данных. Пожалуйста, попробуйте позже.', 'error');
+        const guestFood = [];
+        $('input[name="guest-food"]:checked').each(function() {
+            guestFood.push($(this).val());
+        });
+        
+        console.log('guestFood', guestFood);
+        
+        const guestDrink = [];
+        $('input[name="guest-drink"]:checked').each(function() {
+            guestDrink.push($(this).val());
+        });
+        
+        // Собираем данные о выбранных блюдах и напитках для спутника
+        const companionFood = [];
+        $('input[name="companion-food"]:checked').each(function() {
+            companionFood.push($(this).val());
+        });
+        
+        const companionDrink = [];
+        $('input[name="companion-drink"]:checked').each(function() {
+            companionDrink.push($(this).val());
+        });
+        
+        const formData = {
+            name: $('#guest-name').val(),
+            attendance: $('input[name="attendance"]:checked').val(),
+            companion: $('#companion-name').val(),
+            guestFood: guestFood,
+            guestDrink: guestDrink,
+            companionFood: companionFood,
+            companionDrink: companionDrink,
+            wishes: $('#wishes').val()
+        };
+        
+        // Проверка заполнения формы
+        if (!formData.name || !formData.attendance) {
+            showResponseMessage('Пожалуйста, заполните обязательные поля', 'error');
+            return;
         }
-    });
+        
+        // Дополнительная проверка: если гость приходит, но не выбрал блюда
+        if (formData.attendance === 'yes' && guestFood.length === 0 && guestDrink.length === 0) {
+            showResponseMessage('Пожалуйста, выберите хотя бы одно блюдо или напиток для себя', 'error');
+            return;
+        }
+        
+        // Дополнительная проверка: если добавлен спутник, но не указано имя
+        if ($('#companion-section').hasClass('hidden') === false && 
+            $('#companion-menu-section').hasClass('hidden') === false &&
+            (!formData.companion || formData.companion.trim() === '')) {
+            showResponseMessage('Пожалуйста, укажите имя спутника', 'error');
+            return;
+        }
+        
+        // Отправка данных на сервер
+        $.ajax({
+            url: '/save_guest',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                if (response.success) {
+                    showResponseMessage(response.message, 'success');
+                    // Очищаем форму после успешной отправки
+                    $('#guest-form')[0].reset();
+                    
+                    // Скрываем все секции
+                    $('#guest-menu-section').addClass('hidden');
+                    $('#companion-section').addClass('hidden');
+                    $('#companion-menu-section').addClass('hidden');
+                    
+                    // Восстанавливаем кнопку
+                    $('#add-companion-btn').prop('disabled', false).text('Добавить спутника').css('background-color', '#7d6b52');
+                    
+                    // Сбрасываем все checkbox
+                    $('input[type="checkbox"]').prop('checked', false);
+                    // Сбрасываем радио-кнопки
+                    $('input[type="radio"]').prop('checked', false);
+                    
+                } else {
+                    showResponseMessage(response.message, 'error');
+                }
+            },
+            error: function() {
+                showResponseMessage('Ошибка при отправке данных. Пожалуйста, попробуйте позже.', 'error');
+            }
+        });
     }
     
     // Функция показа сообщения об отправке

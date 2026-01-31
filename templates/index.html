@@ -665,52 +665,30 @@
     
     <script>
     // Функциональность для выбора цветовой гаммы
-    $(document).ready(function() {
-        // Инициализация навигации (код из script.js)
-        $('#home').addClass('active');
-        $('.nav-btn[data-page="home"]').addClass('active');
-        
-        $('.nav-btn').on('click', function() {
-            const pageId = $(this).data('page');
-            $('.page').removeClass('active');
-            $('#' + pageId).addClass('active');
-            $('.nav-btn').removeClass('active');
-            $(this).addClass('active');
-        });
-        
-        // Обработка выбора цветовой гаммы
-        $('.color-item').on('click', function() {
-            const selectedColor = $(this).data('color');
-            
-            // Снимаем выделение со всех
-            $('.color-box').removeClass('selected');
-            
-            // Добавляем выделение выбранному
-            $(this).find('.color-box').addClass('selected');
-            
-        });
-        
-        // Восстанавливаем выбор из localStorage при загрузке
-        
-        // Инициализация карт и формы гостей (должны быть в script.js)
-        initMaps();
-        
-        $('#guest-form').on('submit', function(e) {
-            e.preventDefault();
-            submitGuestForm();
-        });
-        
-        $('input[name="attendance"]').on('change', function() {
-            if ($(this).val() === 'yes') {
-                $('#companion-section').removeClass('hidden');
-                $('#companion-name').prop('required', true);
-            } else {
-                $('#companion-section').addClass('hidden');
-                $('#companion-name').prop('required', false);
-            }
-        });
+ $(document).ready(function() {
+    // Инициализация навигации (код из script.js)
+    $('#home').addClass('active');
+    $('.nav-btn[data-page="home"]').addClass('active');
+    
+    $('.nav-btn').on('click', function() {
+        const pageId = $(this).data('page');
+        $('.page').removeClass('active');
+        $('#' + pageId).addClass('active');
+        $('.nav-btn').removeClass('active');
+        $(this).addClass('active');
     });
     
+    // Обработка выбора цветовой гаммы
+    $('.color-item').on('click', function() {
+        const selectedColor = $(this).data('color');
+        
+        // Снимаем выделение со всех
+        $('.color-box').removeClass('selected');
+        
+        // Добавляем выделение выбранному
+        $(this).find('.color-box').addClass('selected');
+    });
+});          
     // Функции initMaps, submitGuestForm, showResponseMessage должны быть определены в script.js
     </script>
 </body>
