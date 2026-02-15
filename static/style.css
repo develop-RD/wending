@@ -297,11 +297,11 @@ body {
 }
 
 .address-card {
-    flex: 1;
+    flex: 0;
     min-width: 300px;
     max-width: 500px;
     background-color: #f9f5eb;
-    padding: 25px;
+    padding: 50px;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2d9c9;
