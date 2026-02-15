@@ -207,7 +207,7 @@ def admin_login():
     
     # Используйте переменные окружения для реального проекта!
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
-    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'wedding2023')
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', '1234')
     
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         session['admin_logged_in'] = True
@@ -423,7 +423,7 @@ if __name__ == '__main__':
     
     print(f"Для входа в админ-панель:")
     print(f"Логин: {os.environ.get('ADMIN_USERNAME', 'admin')}")
-    print(f"Пароль: {os.environ.get('ADMIN_PASSWORD', 'wedding2025')}")
+    print(f"Пароль: {os.environ.get('ADMIN_PASSWORD', '1234')}")
     print(f"Админ-панель: http://localhost:5000/admin")
     
     # Запускаем периодическую очистку
