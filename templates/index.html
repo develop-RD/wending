@@ -298,46 +298,6 @@
                 <p class="invitation">В нашей жизни скоро состоится важное событие - наша свадьба! <br>Приглашаем вас разделить с нами радость в этого неповторимого события!</p>
                 <div class="ornament"></div>
                 
-                <!-- Блоки цветовой гаммы -->
-                <div class="color-palette">
-                    <h3 class="color-title">Пожелания к цветовой гамме</h3>
-                    <p class="color-subtitle">Для создания гармоничной атмосферы, будем рады, если вы <br> поддержите цветовую гамму нашего праздника </p>
-                    
-                    <div class="color-grid">
-                        <div class="color-item" data-color="natural">
-                            <div class="color-box color-natural"></div>
-                            <div class="color-name">Натуральный</div>
-                            <div class="color-desc">Древесные тона</div>
-                        </div>
-                        
-                        <div class="color-item" data-color="forest">
-                            <div class="color-box color-forest"></div>
-                            <div class="color-name">Лесной</div>
-                            <div class="color-desc">Зеленые оттенки</div>
-                        </div>
-                        
-                        <div class="color-item" data-color="ocean">
-                            <div class="color-box color-ocean"></div>
-                            <div class="color-name">Океанский</div>
-                            <div class="color-desc">Синие тона</div>
-                        </div>
-                        
-                        <div class="color-item" data-color="sunset">
-                            <div class="color-box color-sunset"></div>
-                            <div class="color-name">Закатный</div>
-                            <div class="color-desc">Теплые тона</div>
-                        </div>
-                    </div>
-                    
-                    <div id="color-vote-info" class="color-vote-info">
-                        <p style="margin: 0; color: #8b7355; font-weight: 600;">
-                            <i class="fas fa-check-circle"></i> Спасибо за ваш выбор!
-                        </p>
-                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #7d6b52;">
-                            Мы учтём ваши пожелания при оформлении свадьбы
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -352,9 +312,9 @@
             <i class="fas fa-map-marker-alt"></i>
             <span>Адрес</span>
         </button>
-        <button class="nav-btn" data-page="menu">
-            <i class="fas fa-utensils"></i>
-            <span>Меню</span>
+        <button class="nav-btn" data-page="dresscode">
+            <i class="fas fa-tshirt"></i>
+            <span>Дресс-код</span>
         </button>
         <button class="nav-btn" data-page="guests">
             <i class="fas fa-users"></i>
@@ -397,98 +357,77 @@
         </div>
     </section>
 
-    <!-- Страница с меню -->
-    <section id="menu" class="page">
-        <div class="page-content">
-            <h2 class="page-title"><i class="fas fa-utensil-spoon"></i> Меню праздничного ужина</h2>
-            <div class="menu-container">
-                <!-- Меню остаётся без изменений -->
-                <div class="menu-category">
-                    <h3><i class="fas fa-fish"></i> Закуски</h3>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Брускетта с авокадо и креветками</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
+    <!-- Страница с дресс-кодом -->
+    <section id="dresscode" class="page">
+       <div class="page-content">
+            <h2 class="page-title"><i class="fas fa-tshirt"></i>Дресс-код</h2>
+                <!-- Блоки цветовой гаммы -->
+                <div class="color-palette">
+                    <h3 class="color-title">Пожелания к цветовой гамме</h3>
+                    <p class="color-subtitle">Будем признательный, если при выборе наряда вы <br> придержитесь цветовой гаммы нашего торжества!  </p>
+                    
+                    <div class="color-grid">
+                        <!-- Коричневая гамма (насыщенная) -->
+                        <div class="color-item" data-color="cappuccino">
+                            <div class="color-box" style="background: linear-gradient(135deg, #8B5A2B 0%, #A0522D 100%);"></div>
+                            <div class="color-name">Капучино</div>
+                            <div class="color-desc">Насыщенный кофейный</div>
                         </div>
-                        <p class="menu-description">Хрустящий хлеб с нежным авокадо, тигровыми креветками и соусом из лайма.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Капрезе с сыром буратта</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
+                        
+                        <div class="color-item" data-color="taupe">
+                            <div class="color-box" style="background: linear-gradient(135deg, #7C5E4A 0%, #6B4F3C 100%);"></div>        <div class="color-name">Гречишный</div>
+                            <div class="color-desc">Глубокий серо-коричневый</div>
                         </div>
-                        <p class="menu-description">Свежие томаты, нежный сыр буратта, базилик и оливковое масло холодного отжима.</p>
+                        
+                        <div class="color-item" data-color="caramel">
+                            <div class="color-box" style="background: linear-gradient(135deg, #C67F5B 0%, #B86A44 100%);"></div>
+                            <div class="color-name">Карамель</div>
+                            <div class="color-desc">Яркий карамельно-рыжий</div>
+                        </div>
+                        
+                        <!-- Зеленая гамма (насыщенная) -->
+                        <div class="color-item" data-color="sage">
+                            <div class="color-box" style="background: linear-gradient(135deg, #6B8E4C 0%, #5A7D3A 100%);"></div>
+                            <div class="color-name">Шалфей</div>
+                            <div class="color-desc">Глубокий травяной</div>
+                        </div>
+                        
+                        <div class="color-item" data-color="pistachio">
+                            <div class="color-box" style="background: linear-gradient(135deg, #7C9C5E 0%, #6B8B4D 100%);"></div>
+                            <div class="color-name">Фисташка</div>
+                            <div class="color-desc">Яркий фисташковый</div>
+                        </div>
+                        
+                        <div class="color-item" data-color="olive">
+                            <div class="color-box" style="background: linear-gradient(135deg, #7C7F4A 0%, #6B6E3A 100%);"></div>
+                            <div class="color-name">Оливковый</div>
+                            <div class="color-desc">Насыщенный оливковый</div>
+                        </div>
+
+
+                        
+                        <div class="color-item" data-color="champagne">
+                            <div class="color-box" style="background: linear-gradient(135deg, #E5B87B 0%, #D4A76A 100%);"></div>
+                            <div class="color-name">Шампань</div>
+                            <div class="color-desc">Золотисто-медовый</div>
+                        </div>
+                        
+                        <!-- Розовая гамма (насыщенная) -->
+                        <div class="color-item" data-color="blush">
+                            <div class="color-box" style="background: linear-gradient(135deg, #D46B6B 0%, #C45A5A 100%);"></div>
+                            <div class="color-name">Румяна</div>
+                            <div class="color-desc">Глубокий пудрово-розовый</div>
+                        </div>
+                        
                     </div>
+                    
                 </div>
-                
-                <div class="menu-category">
-                    <h3><i class="fas fa-drumstick-bite"></i> Основные блюда</h3>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Медовая утка с грушевым пюре</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Утиная грудка в медовом маринаде с нежным грушевым пюре и овощами на гриле.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Лосось под соусом из шпината</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Филе лосося с крем-соусом из шпината и запеченным картофелем.</p>
-                    </div>
-                </div>
-                
-                <div class="menu-category">
-                    <h3><i class="fas fa-birthday-cake"></i> Десерты</h3>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Свадебный торт "Лесные ягоды"</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Нежные бисквитные коржи с кремом из маскарпоне и свежими лесными ягодами.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Тирамису в индивидуальной подаче</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Классический итальянский десерт с кофе масала и какао.</p>
-                    </div>
-                </div>
-                
-                <div class="menu-category">
-                    <h3><i class="fas fa-wine-glass-alt"></i> Напитки</h3>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Игристые вина</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Подборка итальянских и французских игристых вин к каждому этапу вечера.</p>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-header">
-                            <h4>Фирменные коктейли</h4>
-                            <span class="menu-dots"></span>
-                            <span class="menu-price"></span>
-                        </div>
-                        <p class="menu-description">Авторские коктейли "Лесная сказка" и "Любовь в Петербурге".</p>
-                    </div>
-                </div>
-            </div>
+
         </div>
+
     </section>
 
     <!-- Страница для гостей -->
-<!-- В секции #guests замените текущий блок с предпочтениями на этот -->
-
 <section id="guests" class="page">
     <div class="page-content">
         <h2 class="page-title"><i class="fas fa-user-check"></i> Подтверждение присутствия</h2>
