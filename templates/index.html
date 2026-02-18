@@ -285,6 +285,47 @@
         from { opacity: 0; }
         to { opacity: 1; }
     }
+    /* Медиа-запросы для мобильных устройств */
+@media screen and (max-width: 768px) {
+    /* Адаптация сетки цветов */
+    .color-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 колонки на планшетах */
+        gap: 10px;
+        padding: 0 10px;
+    }
+    
+    /* Уменьшаем размеры цветовых блоков */
+    .color-box {
+        width: 100% !important; /* Растягиваем на всю ширину колонки */
+        max-width: 120px;
+        height: auto !important;
+        aspect-ratio: 1 / 1; /* Сохраняем квадратную форму */
+        margin: 0 auto;
+    }
+    
+    /* Адаптация контейнера страницы */
+    #dresscode .page-content {
+        padding: 80px 15px 30px !important;
+    }
+    
+    /* Уменьшаем отступы и размеры текста */
+    .color-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .color-subtitle {
+        font-size: 1rem !important;
+        padding: 0 15px;
+    }
+    
+    .color-name {
+        font-size: 0.85rem !important;
+    }
+    
+    .color-desc {
+        font-size: 0.75rem !important;
+    }
+    }
     </style>
 </head>
 <body>
