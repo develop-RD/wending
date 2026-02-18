@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('#guest-menu-section').addClass('hidden');
     $('#companion-section').addClass('hidden');
     $('#add-companion-btn').prop('disabled', false).text('Добавить спутника').css('background-color', '#7d6b52');
-    
+    let companinState = false; 
     // Обработка радио-кнопок присутствия
     $('input[name="attendance"]').on('change', function() {
         if ($(this).val() === 'yes') {
@@ -58,6 +58,9 @@ $(document).ready(function() {
     
     // Обработка кнопки добавления спутника
     $('#add-companion-btn').on('click', function() {
+        if (companinState == false){
+            companinState = true;
+            $(this).prop('disabled', false).text('Скрыть спутника').css('background-color', '#5a4a3a');
         // Показываем секцию спутника
         $('#companion-section').removeClass('hidden');
         // Показываем меню для спутника
@@ -65,9 +68,22 @@ $(document).ready(function() {
         
         // Делаем имя спутника обязательным
         $('#companion-name').prop('required', true);
+
+        }else{
+            companinState = false;
+            $(this).prop('disabled', false).text('Добавить спутнкиа').css('background-color', '#5a4a3a');
+        // Показываем секцию спутника
+        $('#companion-section').addClass('hidden');
+        // Показываем меню для спутника
+        $('#companion-menu-section').addClass('hidden');
         
+        // Делаем имя спутника обязательным
+        $('#companion-name').prop('required', true);
+
+        }
+
+        console.log(companinState); 
         // Блокируем кнопку и меняем текст
-        $(this).prop('disabled', true).text('Спутник добавлен').css('background-color', '#5a4a3a');
     });
     
     // Обработка формы гостей
