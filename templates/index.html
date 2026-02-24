@@ -326,6 +326,75 @@
         font-size: 0.75rem !important;
     }
     }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  display:none; 
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; 
+  width: 26px;
+  left: 4px; 
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.slider-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  z-index: 1;
+}
+
+.slider-text.on {
+  left: 8px;
+  opacity: 0;
+}
+
+.slider-text.off {
+  right: 8px;
+  opacity: 1;
+}
+
+input:checked + .slider { 
+  background-color: #8b7355;
+}
+
+input:checked + .slider:before { 
+  transform: translateX(26px); 
+}
+
+input:checked + .slider .slider-text.on {
+  opacity: 1;
+}
+
+input:checked + .slider .slider-text.off {
+  opacity: 0;
+}
+
     </style>
 </head>
 <body>
@@ -559,10 +628,22 @@
             
             <!-- Блок меню для гостя -->
             <div id="guest-menu-section" class="hidden">
-                <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                 <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
+                    <i class="fas fa-bus"></i> Потребуется ли трансфер ?
+                <!-- Перенос позиции слайдера на новую строку -->
+                <br>
+                <label class="switch">
+                  <input type="checkbox" id="toggleSwitch">
+                  <span class="slider">
+                      <span class="slider-text on">Да</span>
+                      <span class="slider-text off">Нет</span>
+                </span>
+                </label>    
+            </h3>
+               <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
                     <i class="fas fa-utensils"></i> Ваши предпочтения в меню
-                </h3>
-                
+            </h3>
+
                 <div class="form-group">
                     <label>Выберите блюда для себя</label>
                     <div class="checkbox-group">
