@@ -80,6 +80,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS guests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
+                bus TEXT NOT NULL, 
                 attendance TEXT NOT NULL CHECK(attendance IN ('yes', 'no')),
                 companion_name TEXT,
                 guest_food_preference TEXT,  -- Отдельное поле для еды гостя
@@ -122,14 +123,19 @@ def save_guest():
         # Валидация данных
         if not data or not data.get('name') or len(data.get('name', '').strip()) < 2:
             return jsonify({"success": False, "message": "Пожалуйста, введите корректное имя"})
-        
         if data.get('attendance') not in ['yes', 'no']:
             return jsonify({"success": False, "message": "Неверный статус присутствия"})
-        
+        if data.get('bus') not in ['yes', 'no']:
+            print("status bus = ",data.get('bus'))
+            return jsonify({"success": False, "message": "Неверный статус указания трансфера"})
+       
         # Подготовка данных для гостя
         guest_food_list = data.get('guestFood', [])
         guest_drink_list = data.get('guestDrink', [])
         
+        print("name = ",data.get('name'))
+        print("bus = ",data.get('bus'))
+        print("attendance = ",data.get('attendance'))
         # Подготовка данных для спутника
         companion_food_list = data.get('companionFood', [])
         companion_drink_list = data.get('companionDrink', [])
@@ -143,6 +149,7 @@ def save_guest():
         # Подготовка данных для вставки
         guest_data = (
             data.get('name', '').strip(),
+            data.get('bus'),
             data.get('attendance'),
             data.get('companion', '').strip() if data.get('companion') else None,
             guest_food_str,        # Еда гостя
@@ -161,11 +168,11 @@ def save_guest():
                 cursor = conn.cursor()
                 
                 cursor.execute('''
-                    INSERT INTO guests (name, attendance, companion_name, 
+                    INSERT INTO guests (name,bus, attendance, companion_name, 
                                        guest_food_preference, guest_drink_preference,
                                        companion_food_preference, companion_drink_preference, 
                                        wishes)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', guest_data)
                 
                 conn.commit()

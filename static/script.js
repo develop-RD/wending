@@ -188,13 +188,12 @@ $(document).ready(function() {
     
     // Функция отправки формы гостя
     function submitGuestForm() {
-        // Собираем данные о выбранных блюдах и напитках для гостя
+        // Собираем данные о выбранных блюдах и напитках для гостя, а так же трансфере
         const guestFood = [];
         $('input[name="guest-food"]:checked').each(function() {
             guestFood.push($(this).val());
         });
         
-        console.log('guestFood', guestFood);
         
         const guestDrink = [];
         $('input[name="guest-drink"]:checked').each(function() {
@@ -211,9 +210,14 @@ $(document).ready(function() {
         $('input[name="companion-drink"]:checked').each(function() {
             companionDrink.push($(this).val());
         });
-        
+       
+      const transferStatus = document.getElementById('transferStatus');
+    
+      
+            console.log("status = ",transferStatus.value);
         const formData = {
             name: $('#guest-name').val(),
+            bus:  transferStatus.value,
             attendance: $('input[name="attendance"]:checked').val(),
             companion: $('#companion-name').val(),
             guestFood: guestFood,

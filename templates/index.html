@@ -633,12 +633,14 @@ input:checked + .slider .slider-text.off {
                 <!-- Перенос позиции слайдера на новую строку -->
                 <br>
                 <label class="switch">
-                  <input type="checkbox" id="toggleSwitch">
-                  <span class="slider">
-                      <span class="slider-text on">Да</span>
-                      <span class="slider-text off">Нет</span>
-                </span>
-                </label>    
+                  <input type="checkbox" name="toggleSwitch" id="toggleSwitch" value="off"> 
+                  <span class="slider"> 
+                    <span class="slider-text on">Да</span> 
+                    <span class="slider-text off">Нет</span>
+                  </span>
+                </label>   
+                  <!-- Скрытое поле для отправки на сервер -->
+                  <input type="hidden" name="transferStatus" id="transferStatus" value="off">
             </h3>
                <h3 style="color: #8b7355; margin: 20px 0 15px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(139, 115, 85, 0.2);">
                     <i class="fas fa-utensils"></i> Ваши предпочтения в меню
@@ -842,8 +844,21 @@ input:checked + .slider .slider-text.off {
         // Добавляем выделение выбранному
         $(this).find('.color-box').addClass('selected');
     });
-});          
-    // Функции initMaps, submitGuestForm, showResponseMessage должны быть определены в script.js
-    </script>
+});         
+    const toggleSwitch = document.getElementById('toggleSwitch');
+    const transferStatus = document.getElementById('transferStatus');
+    
+            transferStatus.value = 'no';  // или 'no' или '0' или 'false'
+    // Обновляем значение при каждом изменении слайдера
+    toggleSwitch.addEventListener('change', function() {
+        if (this.checked) {
+            transferStatus.value = 'yes';  // или 'yes' или '1' или 'true'
+            console.log('Статус обновлен: ДА');
+        } else {
+            transferStatus.value = 'no';  // или 'no' или '0' или 'false'
+            console.log('Статус обновлен: НЕТ');
+        }
+    });
+        </script>
 </body>
 </html>
