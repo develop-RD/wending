@@ -80,7 +80,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS guests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                bus TEXT NOT NULL, 
+                bus TEXT NOT NULL CHECK(bus IN ('yes', 'no')),
                 attendance TEXT NOT NULL CHECK(attendance IN ('yes', 'no')),
                 companion_name TEXT,
                 guest_food_preference TEXT,  -- Отдельное поле для еды гостя
@@ -251,7 +251,15 @@ def admin_dashboard():
                 
                 cursor.execute("SELECT COUNT(*) as with_companion FROM guests WHERE companion_name IS NOT NULL AND companion_name != ''")
                 with_companion = cursor.fetchone()['with_companion']
-                
+               
+                # Подсчет гостей, которым нужен трансфер (только те, кто придет)
+                cursor.execute("""
+                    SELECT COUNT(*) as transfer_needed 
+                    FROM guests 
+                    WHERE attendance = 'yes' AND bus = 'yes'
+                """)
+                transfer_needed = cursor.fetchone()['transfer_needed']
+
                 # Подсчитываем общее количество участников
                 cursor.execute("""
                     SELECT COUNT(*) as companions 
@@ -319,6 +327,7 @@ def admin_dashboard():
                              not_attending_guests=not_attending_guests,
                              with_companion=with_companion,
                              total_participants=total_participants,
+                             transfer_needed=transfer_needed,  # Добавлено
                              food_stats=food_stats,
                              drink_stats=drink_stats,
                              recent_guests=recent_guests)
