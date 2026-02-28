@@ -680,3 +680,69 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* Пасхалка с монетками - упрощенная версия */
+.coin-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.coin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: coin-fall linear forwards;
+    z-index: 10000;
+}
+
+.coin::before {
+    content: "₽";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #8b4513;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+@keyframes coin-fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(100vh + 100px)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.gift-title {
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.gift-title:hover {
+    transform: scale(1.05);
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes flash {
+    0% { transform: scale(1); text-shadow: none; }
+    50% { transform: scale(1.2); color: #ffd700 !important; text-shadow: 0 0 20px gold; }
+    100% { transform: scale(1); text-shadow: none; }
+}
+
+.flash-effect {
+    animation: flash 0.5s ease;
+}

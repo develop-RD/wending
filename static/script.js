@@ -281,15 +281,70 @@ $(document).ready(function() {
             }
         });
     }
+    // Функция для создания падающих монеток (ОДНА, без дубликатов)
+    function createFallingCoins() {
+        console.log("СОЗДАЕМ МОНЕТКИ!"); // Для отладки
+        
+        const container = $('<div class="coin-container"></div>');
+        $('body').append(container);
+        
+        const numberOfCoins = 40; // Немного уменьшил количество
+        
+        for (let i = 0; i < numberOfCoins; i++) {
+            setTimeout(() => {
+                const coin = $('<div class="coin"></div>');
+                
+                const startX = Math.random() * window.innerWidth;
+                const delay = Math.random() * 0.5;
+                const duration = 2 + Math.random() * 3;
+                const size = 15 + Math.random() * 25;
+                
+                coin.css({
+                    left: startX + 'px',
+                    top: '-50px',
+                    width: size + 'px',
+height: size + 'px',
+                    animation: `coin-fall ${duration}s linear ${delay}s forwards`
+                });
+                
+                container.append(coin);
+                
+                setTimeout(() => {
+                    coin.remove();
+                }, (duration + delay) * 1000 + 100);
+                
+            }, i * 40);
+        }
+        
+        setTimeout(() => {
+            container.remove();
+        }, 8000);
+    }
     
     // Функция показа сообщения об отправке
     function showResponseMessage(message, type) {
         const responseDiv = $('#response-message');
         responseDiv.removeClass('hidden success error').addClass(type).text(message);
         
-        // Автоматически скрыть сообщение через 5 секунд
         setTimeout(function() {
             responseDiv.addClass('hidden');
         }, 5000);
     }
+    
+    // Пасхалка: монетки при клике на заголовок "Подарки!"
+    // ВАЖНО: этот код должен быть ВНУТРИ $(document).ready()
+    $('#gifts .main-title').css('cursor', 'pointer').addClass('gift-title');
+    
+    $('#gifts .main-title').on('click', function() {
+        console.log("КЛИК ПО ЗАГОЛОВКУ ПОДАРКИ!"); // Для отладки
+        
+        $(this).addClass('flash-effect');
+        createFallingCoins();
+        
+        setTimeout(() => {
+            $(this).removeClass('flash-effect');
+        }, 1000);
+        
+        return false;
+    });
 });
